@@ -1,4 +1,4 @@
-# [TeamProject] 8주차 team3_red
+# [TeamProject] 8주차 team3 red
 
 팀원 : 
 
