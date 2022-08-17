@@ -124,6 +124,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<section id="자료-출처" class="level6">
+<h6 class="anchored" data-anchor-id="자료-출처">자료 출처</h6>
+<ul>
+<li>https://www.kaggle.com/datasets/ishadss/productivity-prediction-of-garment-employees (Productivity Prediction of Garment Employees)</li>
+</ul>
+</section>
 <section id="개요" class="level1">
 <h1>개요</h1>
 <ul>
@@ -146,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>idle time : 유휴 시간</li>
 <li>idle men : 유휴 인원</li>
 <li>no of style change : 작업 변경 횟수</li>
-<li>no of workers : 부서별 작업자 수</li>
+<li>no of workers : 공정별 작업자 수</li>
 <li>actual productivity : 실제 생산성</li>
 </ul>
 </section>
@@ -430,7 +436,8 @@ W = 0.94394, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <ul>
-<li>종속변수인 actual productivity(실제생산성)은 정규분포를 따르는 것으로 확인됨</li>
+<li>종속변수인 actual productivity(실제생산성)은 정규분포를 따르지 않는 것으로 확인됨</li>
+<li>하지만 분산분석은 정규성 가정에 크게 제한을 받지 않는 것으로 알려져 있고 표본 크기도 충분히 크기 때문에 분석 실시함</li>
 </ul>
 </section>
 <section id="등분산성-검정" class="level2">
@@ -555,11 +562,19 @@ mean in group finishing    mean in group sweing
 <li>작업공정별 생산성에 영향을 미치는 변수를 확인하고자 데이터를 분리함</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>wp.f <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'finishing'</span>, ])</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>wp.s <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'sweing'</span>, ])</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.f)</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(actual_productivity <span class="sc">~</span> department, <span class="at">data=</span>wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>wp.f <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'finishing'</span>, ])</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>wp.s <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'sweing'</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="다중회귀분석-마감-처리-공정" class="level3">
+<h3 class="anchored" data-anchor-id="다중회귀분석-마감-처리-공정">다중회귀분석 (마감 처리 공정)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.f)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -590,8 +605,13 @@ Residual standard error: 0.184 on 500 degrees of freedom
 Multiple R-squared:  0.1363,    Adjusted R-squared:  0.1277 
 F-statistic: 15.79 on 5 and 500 DF,  p-value: 1.909e-14</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.s)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="다중회귀분석-봉제-공정" class="level3">
+<h3 class="anchored" data-anchor-id="다중회귀분석-봉제-공정">다중회귀분석 (봉제 공정)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.s)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -624,23 +644,24 @@ F-statistic: 304.9 on 9 and 681 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
+</section>
 <section id="팀별-다중회귀분석" class="level2">
 <h2 class="anchored" data-anchor-id="팀별-다중회귀분석">팀별 다중회귀분석</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.f, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.f, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.s, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.s, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-17-3.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Df Sum Sq Mean Sq F value Pr(&gt;F)    
 team          11   3.15 0.28668   10.21 &lt;2e-16 ***
@@ -648,8 +669,8 @@ Residuals   1185  33.26 0.02807
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>model.f <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.f)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>model.f <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.f)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 team         11  2.068  0.1880   5.297 6.09e-08 ***
@@ -657,8 +678,8 @@ Residuals   494 17.535  0.0355
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>model.s <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.s)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>model.s <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.s)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 team         11  1.904 0.17307   8.034 2.93e-13 ***
@@ -671,7 +692,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="사후-검정-1" class="level2">
 <h2 class="anchored" data-anchor-id="사후-검정-1">사후 검정</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Tables of effects
 
@@ -683,7 +704,7 @@ rep 105.00000 109.00000 95.00000 105.00000 93.00000 94.00000 96.00000 109.00000
     -6.292e-04  -0.01535 -0.05311  0.04396
 rep  1.040e+02 100.00000 88.00000 99.00000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -759,11 +780,11 @@ $team
 12-10  0.0593192070 -0.01846108  0.137099493 0.3424569
 12-11  0.0970708380  0.01669556  0.177446112 0.0046180</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.f, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.f, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Tables of effects
 
@@ -775,7 +796,7 @@ rep 49.00000 52.00000 37.00000 46.00000 35.00000 35.000 41.00000 53.00000
     -0.02842 -0.02953 -0.05913  0.03938
 rep 46.00000 43.00000 29.00000 40.00000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -851,11 +872,11 @@ $team
 12-10  0.0689153559 -0.06699201  2.048227e-01 0.8830674
 12-11  0.0985076717 -0.05238346  2.493988e-01 0.5913587</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.f), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.f), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.s, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.s, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Tables of effects
 
@@ -867,7 +888,7 @@ rep 56.00000 57.00000 58.00000 59.000000 58.00000 59.000000 55.00000 56.00000
      0.02033 -0.005054 -0.04585  0.04804
 rep 58.00000 57.000000 59.00000 59.00000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -943,9 +964,9 @@ $team
 12-10  0.053094665 -0.036302800  0.1424921301 0.7284701
 12-11  0.093889148  0.005265702  0.1825125948 0.0269557</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.s), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.s), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="productivity_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid" width="672"></p>
+<p><img src="productivity_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -955,8 +976,8 @@ $team
 <li>수치형 독립변수에 따라 실제 생산성에 차이가 있는지 검정</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp)</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -987,7 +1008,7 @@ Residual standard error: 0.1517 on 1187 degrees of freedom
 Multiple R-squared:  0.2502,    Adjusted R-squared:  0.2445 
 F-statistic:    44 on 9 and 1187 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">step</span>(model, <span class="at">direction=</span><span class="st">'backward'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">step</span>(model, <span class="at">direction=</span><span class="st">'backward'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=-4505.32
 actual_productivity ~ targeted_productivity + smv + wip + over_time + 
@@ -1055,6 +1076,22 @@ F-statistic: 49.33 on 8 and 1188 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2 class="anchored" data-anchor-id="회귀-모델">회귀 모델</h2>
 <ul>
 <li>생산성 = 0.224 + 0.7 × 목표생산성 - 0.0063 × 표준시간 + 0.0000053 × 재공품 - 0.0000037 × 초과근무 + 0.000052 × 인센티브 - 0.008 × 유휴 작업자 - 0.048 × 작업 변경 횟수 + 0.0035 × 총 작업자 수</li>
+</ul>
+</section>
+<section id="결론" class="level2">
+<h2 class="anchored" data-anchor-id="결론">결론</h2>
+<ul>
+<li>독립 변수 중 수치형 변수에서는 목표생산성이 가장 큰 영향을 끼쳤으며, 작업 변경 횟수가 두번째로 큰 영향을 끼치는 것으로 나타남</li>
+<li>범주형 변수 중에서는 공정별로 차이가 나타났으며 주(week)별로도 차이를 보임</li>
+<li>목표 생산성이 가장 큰 영향을 끼치는 것으로 나타났지만 무턱대고 목표값을 높이기엔 여러 문제가 나타날 것으로 예상됨</li>
+<li>인센티브는 생산성과 영향이 클 것이라는 상식을 벗어난 결과가 나타남</li>
+</ul>
+</section>
+<section id="대안-제시" class="level2">
+<h2 class="anchored" data-anchor-id="대안-제시">대안 제시</h2>
+<ul>
+<li>유동적인 인센티브 지급 - 전 작업자에게 지급하는 인센티브를 줄이는 것이 아닌 마감 처리 공정 작업자의 인센티브는 줄이되 봉제 공정 작업자에게 주는 인센티브를 늘려 생산성을 높여야 할 것으로 판단됨</li>
+<li>제품별로 생산팀 재편성 - 작업 시 품목이 다양하여 소요되는 작업 준비 시간이 큰 영향을 끼치는 것으로 추정되므로 제품별로 생산팀을 재편성해야 할 것으로 사료됨</li>
 </ul>
 </section>
 </section>
