@@ -17,7 +17,7 @@ str(train)
 train$Age[is.na(train$Age)] = mean(train$Age, na.rm = TRUE)
 ```
 
-### Embarked 컬럼의 빈값을 샘플링해서 채우기
+### 출발지 컬럼의 빈값을 샘플링해서 채우기
 ```{r}
 #train$Embarked == ''
 train$Embarked[train$Embarked == ''] <- sample(na.omit(train$Embarked), 2)
@@ -66,7 +66,7 @@ assocstats(survivors_Ages)
 assocstats(survivors_Embarked)
 ```
 ##### 카이제곱 통계량에 기초해 파이계수, 분할계수, 크래머V를 출력  
-##### 이중 크래머 V의 범위가 0~1로 연관성을 파악하는데 가장 용이할 것으로 판단  
+##### 이중에 크래머 V의 범위가 0~1로 연관성을 파악하는데 가장 용이할 것으로 판단  
 ##### Cramer's V = 0.1: 작음  /  Cramer's V = 0.3: 중간  /  Cramer's V >= 0.5: 큼  
 ##### 성별: 관련 강도 큼/pclass: 중간보다 큼/연령, 출발항구: 작음
 
