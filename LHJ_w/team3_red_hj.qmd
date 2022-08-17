@@ -1,0 +1,10 @@
+---
+title: "House Prices"
+author: "Hyejin Lee"
+date: "2022-08-17"
+---
+```{r}
+library(tidyverse)
+train <- read.csv("", header=T)
+head(train)
+```
