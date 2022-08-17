@@ -2,6 +2,7 @@
 title: "Marketing_Campaign"
 editor: visual
 ---
+**3조 심정윤**
 
 
 데이터 읽어오기 및 확인
@@ -76,8 +77,8 @@ customer$Age_G <- cut(customer$Age, breaks = c(30,40,50,60,70,80),
                          labels = c('30대','40대','50대','60대','70대+@')) 
 
 
-table(customer$Age_G)
-barplot(table(customer$Age_G))
+# table(customer$Age_G)
+barplot(table(customer$Age_G), main = '나이대')
 ```
  
 ### 가족 구성원 수
@@ -109,6 +110,7 @@ barplot(table(customer$HouseholdSize),
 
 ### 소득
 ```{r}
+options(scipen=999)
 income.box <- boxplot(customer$Income)
 # income.box 
 income.box$out
@@ -127,7 +129,7 @@ customer$Income_G <- factor(cut(customer$Income,
                          labels = seq(5000,200000, 5000)))
 # sum(is.na(customer$Income))
 # sum(is.na(customer$Income_G))
-str(customer$Income_G)
+# str(customer$Income_G)
 
 # table(customer$Income_G)
 
@@ -260,15 +262,6 @@ abline(model.HS,
        lty=1, lwd=2)
 ```
 
-
-
-```{r}
-colnames(customer.N)
-customer.N <- customer.N[complete.cases(customer.N),]
-
-model <- lm(TotalPurchase~Income+Education_N+HouseholdSize+Age, data=customer.N)
-step(model, direction = 'backward')
-```
 
 정리 :  
 나이 -> 귀무가설 채택  
