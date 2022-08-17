@@ -1,5 +1,5 @@
 ---
-title: "team3_kjy"
+title: "team3_김지윤"
 author: "kimjiyun"
 editor: visual
 ---
@@ -7,42 +7,47 @@ editor: visual
 train <- read.csv('./train.csv', header=T)
 ```
 
-## 데이터 파악
+### 데이터 파악
 ```{r}
 str(train)
 ```
 
-# 나이 컬럼 결측치에 평균 넣기
+### 나이 컬럼 결측치에 평균 넣기
 ```{r}
 train$Age[is.na(train$Age)] = mean(train$Age, na.rm = TRUE)
 ```
 
-## Embarked 컬럼의 빈값을 샘플링해서 채우기
+### Embarked 컬럼의 빈값을 샘플링해서 채우기
 ```{r}
 #train$Embarked == ''
 train$Embarked[train$Embarked == ''] <- sample(na.omit(train$Embarked), 2)
 ```
 
-## 나이컬럼 범주화
+### 나이컬럼 범주화-> Ages컬럼추가
 ```{r}
 Ages <- cut(train$Age, breaks=c(0, 10,20,30,40,50,60,Inf), right=F, 
             labels=c('Under 10', '10~20', '20~30', '30~40', '40~50', '50~60', 'over 60'))
-```
-
-## 범주화한 나이 Ages컬럼으로 추가하기
-```{r}
 train$Ages <- Ages
 train$Ages <- factor(train$Ages)
 ```
 
-## 성별 컬럼 수치화해서 추가하기
+
+### 성별 컬럼 수치화-> gender컬럼추가
 ```{r}
 train$gender <- factor(train$Sex, levels=c('female', 'male'), labels = c(0, 1))
 train$gender <- as.numeric(train$gender)
 ```
 
 
-## 독립성검정
+### 독립성검정
+```{r}
+survivors_Sex <- table(train$Sex, train$Survived)
+survivors_Pclass <- table(train$Pclass, train$Survived)
+survivors_Ages <- table(train$Ages, train$Survived)
+survivors_Embarked <- table(train$Embarked, train$Survived)
+```
+
+
 ```{r}
 chisq.test(survivors_Sex)
 chisq.test(survivors_Pclass)
@@ -52,7 +57,7 @@ chisq.test(survivors_Embarked)
 ##### 성별, pclass, 연령, 출발지 모두 생존과 관계가 있음
 
 
-## 두 변수간 관련 강도 확인
+### 두 변수간 관련 강도 확인_두 변수간 연관관계 측정
 ```{r}
 library(vcd)
 assocstats(survivors_Sex)
@@ -60,20 +65,22 @@ assocstats(survivors_Pclass)
 assocstats(survivors_Ages)
 assocstats(survivors_Embarked)
 ```
-##### 생존여부와 성별간의 피어슨 계수가 가장 큼 -> 두 변수간의 관련 강도가 가장 높음
+##### 카이제곱 통계량에 기초해 파이계수, 분할계수, 크래머V를 출력  
+##### 이중 크래머 V의 범위가 0~1로 연관성을 파악하는데 가장 용이할 것으로 판단  
+##### Cramer's V = 0.1: 작음  /  Cramer's V = 0.3: 중간  /  Cramer's V >= 0.5: 큼  
+##### 성별: 관련 강도 큼/pclass: 중간보다 큼/연령, 출발항구: 작음
 
-
-## 두 변수간 관계 모자이크 플롯
+### 두 변수간 관계 모자이크 플롯
 ```{r}
 mosaicplot(~Survived+Sex, data=train, shade=TRUE, main='survived-gender')
 ```
-##### 사망자에서는 남성이 많고 생존자는 여성이 많음
+##### 사망자에서는 남성이 많고 생존자는 여성이 많음  
 ##### 두 범주형 변수간 큰 차이를 보이고 있음을 알 수 있음 
 
 ```{r}
 mosaicplot(~Survived+Pclass, data=train, shade=TRUE, main='survived-Pclass')
 ```
-##### 사망자 중에서는 3클래스에 속한 사람이 많고 생존자 중에서는 1클라스에 속한 사람이 많음
+##### 사망자 중에서는 3클래스에 속한 사람이 많고 생존자 중에서는 1클라스에 속한 사람이 많음  
 ##### 두 범주형 변수간 분명한 차이가 존재 -> 밀접한 관련 존재
 
 ```{r}
@@ -87,7 +94,7 @@ mosaicplot(~Survived+Embarked, data=train, shade=TRUE, main='survived-embarked')
 ##### 출발지 간 사망자와 생존자간 비율 차이가 존재 -> 두 범주형 변수간 밀접한 관계가 있음
 
 
-## 생존여부와 다른 변수간의 이항 로지스틱 회귀분석
+### 생존여부와 다른 변수간의 이항 로지스틱 회귀분석
 ```{r}
 non=c('PassengerId', 'Name', 'Embarked', 'Cabin', 'Ticket', 'Ages', 'Sex', 'SibSp')
 train_2 <- train[, !(names(train)%in% non)]
@@ -99,7 +106,7 @@ summary(titanic_logit)
 ##### parch -> 약하지만 관계가 있음
 ##### fare -> 관계가 없음
 
-## 생존여부 예측
+### 생존여부 예측
 ```{r}
 titanic_logit_pred <- predict(titanic_logit, data=train_2, type='response')
 titanic_logit_pred <- factor(titanic_logit_pred>0.5, levels=c(TRUE, FALSE), labels=c(1, 0))
@@ -109,7 +116,7 @@ table(titanic_logit_pred)
 ##### 생존자->320명, 사망자->571명으로 예측됨
 
 
-## 예측과 결과비교_혼동행렬
+### 예측과 결과비교_혼동행렬
 ```{r}
 table(train_2$Survived, titanic_logit_pred, dnn=c('Actual', 'Predicted'))
 ```
@@ -119,14 +126,14 @@ table(train_2$Survived, titanic_logit_pred, dnn=c('Actual', 'Predicted'))
 ##### 생존자->사망자로 예측: 101명
 
 
-## 회귀모델 정확도
+### 회귀모델 정확도
 ```{r}
 mean(train_2$Survived == titanic_logit_pred)
 ```
 ##### 79.7%의 정확도를 보여줌
 
 
-## 성능 평가 지표
+### 성능 평가 지표
 ```{r}
 library(pROC)
 #install.packages('pROC')
