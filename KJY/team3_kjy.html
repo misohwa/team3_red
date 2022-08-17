@@ -154,8 +154,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>Age[<span class="fu">is.na</span>(train<span class="sc">$</span>Age)] <span class="ot">=</span> <span class="fu">mean</span>(train<span class="sc">$</span>Age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="embarked-컬럼의-빈값을-샘플링해서-채우기" class="level3">
-<h3 class="anchored" data-anchor-id="embarked-컬럼의-빈값을-샘플링해서-채우기">Embarked 컬럼의 빈값을 샘플링해서 채우기</h3>
+<section id="출발지-컬럼의-빈값을-샘플링해서-채우기" class="level3">
+<h3 class="anchored" data-anchor-id="출발지-컬럼의-빈값을-샘플링해서-채우기">출발지 컬럼의 빈값을 샘플링해서 채우기</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#train$Embarked == ''</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>Embarked[train<span class="sc">$</span>Embarked <span class="sc">==</span> <span class="st">''</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">na.omit</span>(train<span class="sc">$</span>Embarked), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

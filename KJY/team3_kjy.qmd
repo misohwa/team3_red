@@ -17,7 +17,7 @@ str(train)
 train$Age[is.na(train$Age)] = mean(train$Age, na.rm = TRUE)
 ```
 
-### Embarked 컬럼의 빈값을 샘플링해서 채우기
+### 출발지 컬럼의 빈값을 샘플링해서 채우기
 ```{r}
 #train$Embarked == ''
 train$Embarked[train$Embarked == ''] <- sample(na.omit(train$Embarked), 2)
