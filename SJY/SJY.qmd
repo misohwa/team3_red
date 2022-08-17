@@ -15,7 +15,37 @@ customer <- df[,c(-1,-26, -27,-28,-29)]
 str(customer)
 ```
 
-캠페인 현황 확인
+**AcceptedCmp1** - 1 if customer accepted the offer in the 1st campaign, 0 otherwise  
+**AcceptedCmp2** - 1 if customer accepted the offer in the 2nd campaign, 0 otherwise  
+**AcceptedCmp3** - 1 if customer accepted the offer in the 3rd campaign, 0 otherwise  
+**AcceptedCmp4** - 1 if customer accepted the offer in the 4th campaign, 0 otherwise  
+**AcceptedCmp5** - 1 if customer accepted the offer in the 5th campaign, 0 otherwise  
+
+Response (target) - 1 if customer accepted the offer in the last campaign, 0 otherwise  
+Complain - 1 if customer complained in the last 2 years  
+DtCustomer - date of customer’s enrolment with the company  
+**Education** - customer’s level of education  
+**Marital** - customer’s marital status  
+**Kidhome** - number of small children in customer’s household  
+**Teenhome** - number of teenagers in customer’s household  
+**Income** - customer’s yearly household income  
+
+**MntFishProducts** - amount spent on fish products in the last 2 years  
+**MntMeatProducts** - amount spent on meat products in the last 2 years  
+**MntFruits** - amount spent on fruits products in the last 2 years  
+**MntSweetProducts** - amount spent on sweet products in the last 2 years  
+**MntWines** - amount spent on wine products in the last 2 years  
+**MntGoldProds** - amount spent on gold products in the last 2 years  
+
+NumDealsPurchases - number of purchases made with discount  
+NumCatalogPurchases - number of purchases made using catalogue  
+NumStorePurchases - number of purchases made directly in stores  
+NumWebPurchases - number of purchases made through company’s web site  
+NumWebVisitsMonth - number of visits to company’s web site in the last month  
+
+Recency - number of days since the last purchase  
+
+## 캠페인 현황 확인
 ```{r}
 par(mfrow=c(2,3))
 pie(table(customer$AcceptedCmp1), init.angle=90, main='캠페인 1', labels = c('X','O'))
@@ -26,28 +56,31 @@ pie(table(customer$AcceptedCmp5), init.angle=90, main='캠페인 5', labels = c(
 par(mfrow=c(1,1))
 ```
 
+## 주 등록 고객층 확인
 
 
+#### 나이
 Yearbirth 데이터 확인 및 이상치 결측치 처리
 ```{r}
 birth.box <- boxplot(customer$Year_Birth, pch=20)
 outlier <- birth.box$out  
 outlier
-customer$Year_Birth <- customer$Year_Birth[ifelse(customer$Year_Birth %in% outlier,
-                                                  NA,customer$Year_Birth)] 
+customer$Year_Birth <- customer$Year_Birth[ifelse(customer$Year_Birth %in% outlier,NA,customer$Year_Birth)] 
 ```
 
 
-customer$AgeGroup 추가
+customer$Age 추가
 ```{r}
 customer$Age <- 2022 - customer$Year_Birth
 customer$Age_G <- cut(customer$Age, breaks = c(30,40,50,60,70,80),
                          labels = c('30대','40대','50대','60대','70대+@')) 
 
+
 table(customer$Age_G)
 barplot(table(customer$Age_G))
 ```
-
+ 
+### 가족 구성원 수
 customer$HouseholdSize (가족 구성원 수 컬럼 추가)
 ```{r}
 customer$parent[customer$Marital_Status %in% c('Alone', 'Divorced', 'Widow', 'Single')] <- 1
@@ -61,18 +94,246 @@ customer <- customer [, c(-4,-5)]  # Kidhome, Teenhome 컬럼 삭제
 customer$HouseholdSize <- customer$parent+customer$child
 customer <- customer [, c(-22,-23)]
 
-sort(unique(customer$HouseholdSize))
+# sort(unique(customer$HouseholdSize))
 
 customer$HouseholdSize <- factor(customer$HouseholdSize)
 
-str(customer$HouseholdSize)
+# str(customer$HouseholdSize)
 
-table(customer$HouseholdSize)
+# table(customer$HouseholdSize)
 
 barplot(table(customer$HouseholdSize),
         main = '가족 구성원 수', 
         xlab = '인원 수', ylab = '고객 수')
 ```
+
+### 소득
+```{r}
+income.box <- boxplot(customer$Income)
+# income.box 
+income.box$out
+
+customer$Income[customer$Income == 666666] <- NA
+```
+
+
+```{r}
+# sort(unique(customer$Income), decreasing = T)
+# plot(customer$Income)
+
+
+customer$Income_G <- factor(cut(customer$Income,
+                         breaks = seq(0,200000, 5000),
+                         labels = seq(5000,200000, 5000)))
+# sum(is.na(customer$Income))
+# sum(is.na(customer$Income_G))
+str(customer$Income_G)
+
+# table(customer$Income_G)
+
+barplot(table(customer$Income_G),
+     main='소득구간별 고객 수',
+     xlab='소득금액',ylab = '고객 수')
+```
+
+
+
+
+## 주요고객층 분석
+
+customer$TotalPurchase (총 구매금액)
+```{r}
+customer$TotalPurchase <- customer$MntWines + customer$MntFruits + customer$MntMeatProducts + customer$MntFishProducts + customer$MntSweetProducts + customer$MntGoldProds
+
+# colnames(customer)
+customer <- customer[, c(-(9:14))]
+
+# sort(unique(customer$TotalPurchase))
+
+customer$TotalPurchase_G <- factor(cut(customer$TotalPurchase, breaks = seq(0,2000,100),labels = c(seq(100,2000,100))))
+
+#str(customer$TotalPurchase_G)
+# table(customer$TotalPurchase_G)
+
+barplot(table(customer$TotalPurchase_G),
+        main = '최근 2년 총 구매금액',
+        xlab = '구매 금액대', ylab = '고객 수')
+```
+
+
+결측치 확인 및 삭제 
+```{r}
+library(VIM)
+
+aggr(customer,
+     numbers = T, prop = F, sortVars = T)
+# sum(is.na(customer$Income))
+customer <- customer[complete.cases(customer),]
+```
+
+
+회귀분석을 위해 숫자형으로 변경
+```{r}
+str(customer$Education)
+# unique(customer$Education)
+customer$Education_N <- factor(customer$Education, labels = c(0,0,1,2,3))
+str(customer$Education_N)
+```
+
+**customer.N** : only numeric columns
+```{r}
+# str(customer)
+customer$Age <- 2022 - customer$Year_Birth
+# colnames(customer)
+
+customer.N <- customer[, c('Age','Income','Education_N','HouseholdSize',"TotalPurchase")]
+str(customer.N)
+```
+
+
+### TP~AGE
+
+```{r}
+model.Age <- lm(TotalPurchase ~ Age, data=customer.N)
+
+summary(model.Age)
+
+plot(customer.N$Age, customer.N$TotalPurchase,
+     col='royalblue',
+     main='나이')
+abline(model.Age,
+       col='red',
+       lty=1, lwd=2)
+
+```
+
+
+
+### TP~Income
+
+```{r}
+model.I <- lm(TotalPurchase ~ Income, data=customer.N)
+
+summary(model.I)
+
+plot(customer.N$Income, customer.N$TotalPurchase,
+     col='royalblue',
+     main='소득')
+
+abline(model.I,
+       col='red',
+       lty=1, lwd=2)
+```
+
+
+## TP~EDU
+
+
+```{r}
+
+str(customer.N$Education_N)
+customer.N$Education_N <- as.integer(customer.N$Education_N)
+
+model.E <- lm(TotalPurchase ~ Education_N, data=customer.N)
+summary(model.E)
+
+plot(x=customer.N$Education_N, y=customer.N$TotalPurchase, type='p',
+     main='최종학력',
+     col='royalblue')
+abline(model.E, col='tomato', lwd=2)
+```
+
+## TP~HS
+
+```{r}
+# customer.N$HouseholdSize <- as.integer(customer.N$HouseholdSize)
+model.HS <- lm(TotalPurchase ~ HouseholdSize, data=customer.N)
+summary(model.HS)
+
+plot(x=as.integer(customer.N$HouseholdSize),y=customer.N$TotalPurchase,
+     type='p',
+     col='royalblue',
+     main='가구 구성원 수')
+
+abline(model.HS,
+       col='red',
+       lty=1, lwd=2)
+```
+
+
+
+```{r}
+colnames(customer.N)
+customer.N <- customer.N[complete.cases(customer.N),]
+
+model <- lm(TotalPurchase~Income+Education_N+HouseholdSize+Age, data=customer.N)
+step(model, direction = 'backward')
+```
+
+정리 :  
+나이 -> 귀무가설 채택  
+**소득** -> 귀무가설 **기각** + **R2 0.6281**  
+최종학력 -> 귀무가설 **기각** + R2 0.00786  
+가구구성원수 -> 귀무가설 **기**각 + R2 0.187  
+
+
+### 분산분석
+
+학력
+```{r}
+library(car)
+# 등분산성 여부
+bartlett.test(TotalPurchase~Education_N, data=customer.N)
+# 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행
+oneway.test(TotalPurchase~Education_N, data=customer.N)
+
+edu.aov <- aov(TotalPurchase~factor(Education_N), data=customer.N)
+
+# model.tables(edu.aov, type='mean')
+model.tables(edu.aov, type='effects')
+
+edu.compare <- TukeyHSD(edu.aov)
+edu.compare
+```
+
+
+가족구성원수     
+```{r}
+# 등분산성 여부
+bartlett.test(TotalPurchase~HouseholdSize, data=customer.N)
+# 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행
+hs.ow <-oneway.test(TotalPurchase~HouseholdSize, data=customer.N)
+hs.ow
+
+
+hs.aov <- aov(TotalPurchase ~ HouseholdSize, data=customer.N)
+
+# model.tables(hs.aov, type='mean')
+model.tables(hs.aov, type='effects')
+
+hs.compare <- TukeyHSD(hs.aov)
+hs.compare
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
