@@ -1,0 +1,212 @@
+---
+title: "Garment Industry Employee Productivity Dataset Analysis"
+author: "Jaesang Lee"
+
+editor: visual
+---
+
+# 개요
+
+-   의류 생산 공장 작업자의 제품 생산성에 영향을 끼치는 변수를 찾고 예측 모델을 도출하고자 함
+
+# 데이터셋 변수 설명
+
+-   date : 작업 일자
+-   Quarter : 월별 주 (1주차, 2주차, ..., 5주차)
+-   dapartment : 생산 공정명 (봉제 공정, 마감 공정)
+-   day : 요일
+-   team : 생산팀
+-   targeted productivity : 목표 생산성
+-   smv : 표준 시간 (작업에 할당된 시간)
+-   wip : 재공품
+-   over time : 초과 근무 시간
+-   incentive : 인센티브
+-   idle time : 유휴 시간
+-   idle men : 유휴 인원
+-   no of style change : 작업 변경 횟수
+-   no of workers : 부서별 작업자 수
+-   actual productivity : 실제 생산성
+
+# 데이터 전처리 작업
+
+## 데이터프레임 로딩
+
+```{r}
+wp <- read.csv('./garments_worker_productivity.csv', header=1)
+str(wp)
+```
+
+## 결측치 확인
+
+```{r}
+library(VIM)
+aggr(wp, prop=F, numbers=T, sortVar=T)
+```
+
+## 결측치 대체
+
+```{r}
+wp[,8] <- ifelse(is.na(wp[,8]), mean(wp[,8], na.rm=T), wp[,8])
+aggr(wp, prop=F, numbers=T, sortVar=T)
+```
+
+## 데이터 통계값 확인
+
+```{r}
+summary(wp)
+```
+
+## 변수 타입 변환
+
+```{r fig.height=5, fig.width=5}
+wp$date <- as.Date(wp$date, format='%m/%d/%Y')
+
+wp$day <- as.factor(wp$day)
+barplot(table(wp$day),names=c('Mon', 'Sat', 'Sun', 'Thu', 'Tue', 'Wed'), col=13)
+
+wp$team <- as.factor(wp$team)
+barplot(table(wp$team), col=13)
+
+wp$quarter <- as.factor(wp$quarter)
+
+```
+
+## 데이터값 수정 및 타입 변환
+
+```{r fig.height=5, fig.width=5}
+wp$department <- as.factor(wp$department)
+barplot(table(wp$department), col=13)
+
+library(stringr)
+wp$department <- str_trim(wp$department)
+barplot(table(wp$department), col=13)
+wp$department <- as.factor(wp$department)
+
+str(wp)
+```
+
+# 데이터 분석
+
+## 상관분석
+
+```{r fig.height=10, fig.width=10}
+library(psych)
+str(wp)
+cor(wp[,6:15])
+pairs.panels(wp[,6:15])
+```
+
+## 정규성 검정
+
+```{r}
+shapiro.test(wp$actual_productivity)
+```
+
+-   종속변수인 actual productivity(실제생산성)은 정규분포를 따르는 것으로 확인됨
+
+## 등분산성 검정
+
+```{r}
+bartlett.test(actual_productivity ~ day, data=wp)
+
+bartlett.test(actual_productivity ~ quarter, data=wp)
+```
+
+-   각 변수 간에 분산이 동일한 것으로 확인됨
+
+## 일원분산분석 (실제 생산성 \~ 요일)
+
+-   요일에 따라 실제 생산성에 차이가 있는지 검정
+
+```{r}
+model <- aov(actual_productivity ~ day, data=wp)
+summary(model)
+```
+
+## 일원분산분석 (실제 생산성 \~ 주(week))
+
+-   주(week)에 따라 실제 생산성에 차이가 있는지 검정
+
+```{r}
+model <- aov(actual_productivity~quarter, data=wp)
+summary(model)
+```
+
+## 사후 검정
+
+```{r}
+model.tables(model, type = 'effects')
+TukeyHSD(model)
+plot(TukeyHSD(model), col=9)
+```
+
+## 독립표본 평균 검정 (실제 생산성 \~ 작업공정)
+
+-   작업공정에 따라 실제 생산성에 차이가 있는지 검정
+
+```{r}
+t.test(actual_productivity~department, data=wp)
+```
+
+## 작업 공정별 다중회귀분석
+
+-   작업공정별 생산성에 영향을 미치는 변수를 확인하고자 데이터를 분리함
+
+```{r}
+wp.f <- with(wp, wp[department == 'finishing', ])
+wp.s <- with(wp, wp[department == 'sweing', ])
+
+model <- lm(actual_productivity~targeted_productivity+smv+wip+over_time+incentive+idle_time+idle_men+no_of_style_change+no_of_workers,data=wp.f)
+summary(model)
+
+model <- lm(actual_productivity~targeted_productivity+smv+wip+over_time+incentive+idle_time+idle_men+no_of_style_change+no_of_workers,data=wp.s)
+summary(model)
+```
+
+## 팀별 다중회귀분석
+
+```{r}
+boxplot(actual_productivity~team, data=wp, col=13)
+boxplot(no_of_workers~team, data=wp.f, col=13)
+boxplot(no_of_workers~team, data=wp.s, col=13)
+
+model <- aov(actual_productivity~team, data=wp)
+summary(model)
+
+model.f <- aov(actual_productivity~team, data=wp.f)
+summary(model.f)
+
+model.s <- aov(actual_productivity~team, data=wp.s)
+summary(model.s)
+```
+
+## 사후 검정
+
+```{r}
+model.tables(model, type = 'effects')
+TukeyHSD(model)
+plot(TukeyHSD(model), col=9)
+
+model.tables(model.f, type = 'effects')
+TukeyHSD(model.f)
+plot(TukeyHSD(model.f), col=9)
+
+model.tables(model.s, type = 'effects')
+TukeyHSD(model.s)
+plot(TukeyHSD(model.s), col=9)
+```
+
+## 다중회귀분석
+
+-   수치형 독립변수에 따라 실제 생산성에 차이가 있는지 검정
+
+```{r}
+model <- lm(actual_productivity~targeted_productivity+smv+wip+over_time+incentive+idle_time+idle_men+no_of_style_change+no_of_workers,data=wp)
+summary(model)
+
+summary(step(model, direction='backward'))
+```
+
+## 회귀 모델
+
+-   생산성 = 0.224 + 0.7 × 목표생산성 - 0.0063 × 표준시간 + 0.0000053 × 재공품 - 0.0000037 × 초과근무 + 0.000052 × 인센티브 - 0.008 × 유휴 작업자 - 0.048 × 작업 변경 횟수 + 0.0035 × 총 작업자 수

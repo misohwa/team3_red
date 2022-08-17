@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jaesang Lee">
+
+<title>Garment Industry Employee Productivity Dataset Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="productivity_files/libs/clipboard/clipboard.min.js"></script>
+<script src="productivity_files/libs/quarto-html/quarto.js"></script>
+<script src="productivity_files/libs/quarto-html/popper.min.js"></script>
+<script src="productivity_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="productivity_files/libs/quarto-html/anchor.min.js"></script>
+<link href="productivity_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="productivity_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="productivity_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="productivity_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="productivity_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Garment Industry Employee Productivity Dataset Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jaesang Lee </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="개요" class="level1">
+<h1>개요</h1>
+<ul>
+<li>의류 생산 공장 작업자의 제품 생산성에 영향을 끼치는 변수를 찾고 예측 모델을 도출하고자 함</li>
+</ul>
+</section>
+<section id="데이터셋-변수-설명" class="level1">
+<h1>데이터셋 변수 설명</h1>
+<ul>
+<li>date : 작업 일자</li>
+<li>Quarter : 월별 주 (1주차, 2주차, …, 5주차)</li>
+<li>dapartment : 생산 공정명 (봉제 공정, 마감 공정)</li>
+<li>day : 요일</li>
+<li>team : 생산팀</li>
+<li>targeted productivity : 목표 생산성</li>
+<li>smv : 표준 시간 (작업에 할당된 시간)</li>
+<li>wip : 재공품</li>
+<li>over time : 초과 근무 시간</li>
+<li>incentive : 인센티브</li>
+<li>idle time : 유휴 시간</li>
+<li>idle men : 유휴 인원</li>
+<li>no of style change : 작업 변경 횟수</li>
+<li>no of workers : 부서별 작업자 수</li>
+<li>actual productivity : 실제 생산성</li>
+</ul>
+</section>
+<section id="데이터-전처리-작업" class="level1">
+<h1>데이터 전처리 작업</h1>
+<section id="데이터프레임-로딩" class="level2">
+<h2 class="anchored" data-anchor-id="데이터프레임-로딩">데이터프레임 로딩</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>wp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./garments_worker_productivity.csv'</span>, <span class="at">header=</span><span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1197 obs. of  15 variables:
+ $ date                 : chr  "1/1/2015" "1/1/2015" "1/1/2015" "1/1/2015" ...
+ $ quarter              : chr  "Quarter1" "Quarter1" "Quarter1" "Quarter1" ...
+ $ department           : chr  "sweing" "finishing " "sweing" "sweing" ...
+ $ day                  : chr  "Thursday" "Thursday" "Thursday" "Thursday" ...
+ $ team                 : int  8 1 11 12 6 7 2 3 2 1 ...
+ $ targeted_productivity: num  0.8 0.75 0.8 0.8 0.8 0.8 0.75 0.75 0.75 0.75 ...
+ $ smv                  : num  26.16 3.94 11.41 11.41 25.9 ...
+ $ wip                  : int  1108 NA 968 968 1170 984 NA 795 733 681 ...
+ $ over_time            : int  7080 960 3660 3660 1920 6720 960 6900 6000 6900 ...
+ $ incentive            : int  98 0 50 50 50 38 0 45 34 45 ...
+ $ idle_time            : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ idle_men             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_style_change   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_workers        : num  59 8 30.5 30.5 56 56 8 57.5 55 57.5 ...
+ $ actual_productivity  : num  0.941 0.886 0.801 0.801 0.8 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="결측치-확인" class="level2">
+<h2 class="anchored" data-anchor-id="결측치-확인">결측치 확인</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VIM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: colorspace</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: grid</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>VIM is ready to use.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Suggestions and bug-reports can be submitted at: https://github.com/statistikat/VIM/issues</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'VIM'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:datasets':
+
+    sleep</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggr</span>(wp, <span class="at">prop=</span>F, <span class="at">numbers=</span>T, <span class="at">sortVar=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Variables sorted by number of missings: 
+              Variable Count
+                   wip   506
+                  date     0
+               quarter     0
+            department     0
+                   day     0
+                  team     0
+ targeted_productivity     0
+                   smv     0
+             over_time     0
+             incentive     0
+             idle_time     0
+              idle_men     0
+    no_of_style_change     0
+         no_of_workers     0
+   actual_productivity     0</code></pre>
+</div>
+</div>
+</section>
+<section id="결측치-대체" class="level2">
+<h2 class="anchored" data-anchor-id="결측치-대체">결측치 대체</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>wp[,<span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(wp[,<span class="dv">8</span>]), <span class="fu">mean</span>(wp[,<span class="dv">8</span>], <span class="at">na.rm=</span>T), wp[,<span class="dv">8</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aggr</span>(wp, <span class="at">prop=</span>F, <span class="at">numbers=</span>T, <span class="at">sortVar=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Variables sorted by number of missings: 
+              Variable Count
+                  date     0
+               quarter     0
+            department     0
+                   day     0
+                  team     0
+ targeted_productivity     0
+                   smv     0
+                   wip     0
+             over_time     0
+             incentive     0
+             idle_time     0
+              idle_men     0
+    no_of_style_change     0
+         no_of_workers     0
+   actual_productivity     0</code></pre>
+</div>
+</div>
+</section>
+<section id="데이터-통계값-확인" class="level2">
+<h2 class="anchored" data-anchor-id="데이터-통계값-확인">데이터 통계값 확인</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     date             quarter           department            day           
+ Length:1197        Length:1197        Length:1197        Length:1197       
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+      team        targeted_productivity      smv             wip       
+ Min.   : 1.000   Min.   :0.0700        Min.   : 2.90   Min.   :    7  
+ 1st Qu.: 3.000   1st Qu.:0.7000        1st Qu.: 3.94   1st Qu.:  970  
+ Median : 6.000   Median :0.7500        Median :15.26   Median : 1190  
+ Mean   : 6.427   Mean   :0.7296        Mean   :15.06   Mean   : 1190  
+ 3rd Qu.: 9.000   3rd Qu.:0.8000        3rd Qu.:24.26   3rd Qu.: 1190  
+ Max.   :12.000   Max.   :0.8000        Max.   :54.56   Max.   :23122  
+   over_time       incentive         idle_time           idle_men      
+ Min.   :    0   Min.   :   0.00   Min.   :  0.0000   Min.   : 0.0000  
+ 1st Qu.: 1440   1st Qu.:   0.00   1st Qu.:  0.0000   1st Qu.: 0.0000  
+ Median : 3960   Median :   0.00   Median :  0.0000   Median : 0.0000  
+ Mean   : 4567   Mean   :  38.21   Mean   :  0.7302   Mean   : 0.3693  
+ 3rd Qu.: 6960   3rd Qu.:  50.00   3rd Qu.:  0.0000   3rd Qu.: 0.0000  
+ Max.   :25920   Max.   :3600.00   Max.   :300.0000   Max.   :45.0000  
+ no_of_style_change no_of_workers   actual_productivity
+ Min.   :0.0000     Min.   : 2.00   Min.   :0.2337     
+ 1st Qu.:0.0000     1st Qu.: 9.00   1st Qu.:0.6503     
+ Median :0.0000     Median :34.00   Median :0.7733     
+ Mean   :0.1504     Mean   :34.61   Mean   :0.7351     
+ 3rd Qu.:0.0000     3rd Qu.:57.00   3rd Qu.:0.8503     
+ Max.   :2.0000     Max.   :89.00   Max.   :1.1204     </code></pre>
+</div>
+</div>
+</section>
+<section id="변수-타입-변환" class="level2">
+<h2 class="anchored" data-anchor-id="변수-타입-변환">변수 타입 변환</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(wp<span class="sc">$</span>date, <span class="at">format=</span><span class="st">'%m/%d/%Y'</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>day <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(wp<span class="sc">$</span>day)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(wp<span class="sc">$</span>day),<span class="at">names=</span><span class="fu">c</span>(<span class="st">'Mon'</span>, <span class="st">'Sat'</span>, <span class="st">'Sun'</span>, <span class="st">'Thu'</span>, <span class="st">'Tue'</span>, <span class="st">'Wed'</span>), <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="480"></p>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>team <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(wp<span class="sc">$</span>team)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(wp<span class="sc">$</span>team), <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="480"></p>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>quarter <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(wp<span class="sc">$</span>quarter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="데이터값-수정-및-타입-변환" class="level2">
+<h2 class="anchored" data-anchor-id="데이터값-수정-및-타입-변환">데이터값 수정 및 타입 변환</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>department <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(wp<span class="sc">$</span>department)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(wp<span class="sc">$</span>department), <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="480"></p>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>department <span class="ot">&lt;-</span> <span class="fu">str_trim</span>(wp<span class="sc">$</span>department)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(wp<span class="sc">$</span>department), <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="480"></p>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>wp<span class="sc">$</span>department <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(wp<span class="sc">$</span>department)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1197 obs. of  15 variables:
+ $ date                 : Date, format: "2015-01-01" "2015-01-01" ...
+ $ quarter              : Factor w/ 5 levels "Quarter1","Quarter2",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ department           : Factor w/ 2 levels "finishing","sweing": 2 1 2 2 2 2 1 2 2 2 ...
+ $ day                  : Factor w/ 6 levels "Monday","Saturday",..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ team                 : Factor w/ 12 levels "1","2","3","4",..: 8 1 11 12 6 7 2 3 2 1 ...
+ $ targeted_productivity: num  0.8 0.75 0.8 0.8 0.8 0.8 0.75 0.75 0.75 0.75 ...
+ $ smv                  : num  26.16 3.94 11.41 11.41 25.9 ...
+ $ wip                  : num  1108 1190 968 968 1170 ...
+ $ over_time            : int  7080 960 3660 3660 1920 6720 960 6900 6000 6900 ...
+ $ incentive            : int  98 0 50 50 50 38 0 45 34 45 ...
+ $ idle_time            : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ idle_men             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_style_change   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_workers        : num  59 8 30.5 30.5 56 56 8 57.5 55 57.5 ...
+ $ actual_productivity  : num  0.941 0.886 0.801 0.801 0.8 ...</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="데이터-분석" class="level1">
+<h1>데이터 분석</h1>
+<section id="상관분석" class="level2">
+<h2 class="anchored" data-anchor-id="상관분석">상관분석</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1197 obs. of  15 variables:
+ $ date                 : Date, format: "2015-01-01" "2015-01-01" ...
+ $ quarter              : Factor w/ 5 levels "Quarter1","Quarter2",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ department           : Factor w/ 2 levels "finishing","sweing": 2 1 2 2 2 2 1 2 2 2 ...
+ $ day                  : Factor w/ 6 levels "Monday","Saturday",..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ team                 : Factor w/ 12 levels "1","2","3","4",..: 8 1 11 12 6 7 2 3 2 1 ...
+ $ targeted_productivity: num  0.8 0.75 0.8 0.8 0.8 0.8 0.75 0.75 0.75 0.75 ...
+ $ smv                  : num  26.16 3.94 11.41 11.41 25.9 ...
+ $ wip                  : num  1108 1190 968 968 1170 ...
+ $ over_time            : int  7080 960 3660 3660 1920 6720 960 6900 6000 6900 ...
+ $ incentive            : int  98 0 50 50 50 38 0 45 34 45 ...
+ $ idle_time            : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ idle_men             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_style_change   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ no_of_workers        : num  59 8 30.5 30.5 56 56 8 57.5 55 57.5 ...
+ $ actual_productivity  : num  0.941 0.886 0.801 0.801 0.8 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(wp[,<span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      targeted_productivity         smv          wip
+targeted_productivity            1.00000000 -0.06948887  0.049114361
+smv                             -0.06948887  1.00000000 -0.018322003
+wip                              0.04911436 -0.01832200  1.000000000
+over_time                       -0.08855669  0.67488744  0.014489835
+incentive                        0.03276790  0.03262886  0.021880730
+idle_time                       -0.05618090  0.05686278 -0.026267497
+idle_men                        -0.05381806  0.10590069 -0.048489574
+no_of_style_change              -0.20929412  0.31538751 -0.069003866
+no_of_workers                   -0.08428787  0.91217631  0.009790782
+actual_productivity              0.42159388 -0.12208884  0.088364609
+                         over_time    incentive   idle_time    idle_men
+targeted_productivity -0.088556693  0.032767903 -0.05618090 -0.05381806
+smv                    0.674887440  0.032628856  0.05686278  0.10590069
+wip                    0.014489835  0.021880730 -0.02626750 -0.04848957
+over_time              1.000000000 -0.004793252  0.03103760 -0.01791330
+incentive             -0.004793252  1.000000000 -0.01202362 -0.02113961
+idle_time              0.031037596 -0.012023621  1.00000000  0.55914592
+idle_men              -0.017913297 -0.021139613  0.55914592  1.00000000
+no_of_style_change     0.059790121 -0.026607172 -0.01159787  0.13363170
+no_of_workers          0.734164174  0.049222218  0.05804930  0.10694571
+actual_productivity   -0.054205837  0.076537627 -0.08085081 -0.18173433
+                      no_of_style_change no_of_workers actual_productivity
+targeted_productivity        -0.20929412  -0.084287865          0.42159388
+smv                           0.31538751   0.912176312         -0.12208884
+wip                          -0.06900387   0.009790782          0.08836461
+over_time                     0.05979012   0.734164174         -0.05420584
+incentive                    -0.02660717   0.049222218          0.07653763
+idle_time                    -0.01159787   0.058049300         -0.08085081
+idle_men                      0.13363170   0.106945708         -0.18173433
+no_of_style_change            1.00000000   0.327786521         -0.20736561
+no_of_workers                 0.32778652   1.000000000         -0.05799059
+actual_productivity          -0.20736561  -0.057990592          1.00000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(wp[,<span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+<section id="정규성-검정" class="level2">
+<h2 class="anchored" data-anchor-id="정규성-검정">정규성 검정</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(wp<span class="sc">$</span>actual_productivity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  wp$actual_productivity
+W = 0.94394, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<ul>
+<li>종속변수인 actual productivity(실제생산성)은 정규분포를 따르는 것으로 확인됨</li>
+</ul>
+</section>
+<section id="등분산성-검정" class="level2">
+<h2 class="anchored" data-anchor-id="등분산성-검정">등분산성 검정</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(actual_productivity <span class="sc">~</span> day, <span class="at">data=</span>wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  actual_productivity by day
+Bartlett's K-squared = 2.2362, df = 5, p-value = 0.8156</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(actual_productivity <span class="sc">~</span> quarter, <span class="at">data=</span>wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  actual_productivity by quarter
+Bartlett's K-squared = 6.5481, df = 4, p-value = 0.1618</code></pre>
+</div>
+</div>
+<ul>
+<li>각 변수 간에 분산이 동일한 것으로 확인됨</li>
+</ul>
+</section>
+<section id="일원분산분석-실제-생산성-요일" class="level2">
+<h2 class="anchored" data-anchor-id="일원분산분석-실제-생산성-요일">일원분산분석 (실제 생산성 ~ 요일)</h2>
+<ul>
+<li>요일에 따라 실제 생산성에 차이가 있는지 검정</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity <span class="sc">~</span> day, <span class="at">data=</span>wp)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df Sum Sq Mean Sq F value Pr(&gt;F)
+day            5   0.11 0.02171   0.712  0.614
+Residuals   1191  36.30 0.03048               </code></pre>
+</div>
+</div>
+</section>
+<section id="일원분산분석-실제-생산성-주week" class="level2">
+<h2 class="anchored" data-anchor-id="일원분산분석-실제-생산성-주week">일원분산분석 (실제 생산성 ~ 주(week))</h2>
+<ul>
+<li>주(week)에 따라 실제 생산성에 차이가 있는지 검정</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>quarter, <span class="at">data=</span>wp)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+quarter        4   0.85 0.21219   7.112 1.17e-05 ***
+Residuals   1192  35.56 0.02984                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="사후-검정" class="level2">
+<h2 class="anchored" data-anchor-id="사후-검정">사후 검정</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ quarter 
+     Quarter1  Quarter2  Quarter3  Quarter4 Quarter5
+      0.01647 8.619e-03  -0.03033  -0.02602  0.09109
+rep 360.00000 3.350e+02 210.00000 248.00000 44.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = actual_productivity ~ quarter, data = wp)
+
+$quarter
+                          diff           lwr          upr     p adj
+Quarter2-Quarter1 -0.007850047 -0.0436732154  0.027973122 0.9752979
+Quarter3-Quarter1 -0.046801164 -0.0877764295 -0.005825898 0.0158587
+Quarter4-Quarter1 -0.042492657 -0.0814348094 -0.003550505 0.0244207
+Quarter5-Quarter1  0.074617597 -0.0007454319  0.149980626 0.0538084
+Quarter3-Quarter2 -0.038951117 -0.0804858526  0.002583619 0.0781987
+Quarter4-Quarter2 -0.034642611 -0.0741730174  0.004887796 0.1175474
+Quarter5-Quarter2  0.082467644  0.0067989713  0.158136316 0.0246883
+Quarter4-Quarter3  0.004308506 -0.0399444716  0.048561484 0.9989010
+Quarter5-Quarter3  0.121418761  0.0431792503  0.199658271 0.0002334
+Quarter5-Quarter4  0.117110254  0.0399160849  0.194304423 0.0003509</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="독립표본-평균-검정-실제-생산성-작업공정" class="level2">
+<h2 class="anchored" data-anchor-id="독립표본-평균-검정-실제-생산성-작업공정">독립표본 평균 검정 (실제 생산성 ~ 작업공정)</h2>
+<ul>
+<li>작업공정에 따라 실제 생산성에 차이가 있는지 검정</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(actual_productivity<span class="sc">~</span>department, <span class="at">data=</span>wp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  actual_productivity by department
+t = 2.9314, df = 926.17, p-value = 0.003458
+alternative hypothesis: true difference in means between group finishing and group sweing is not equal to 0
+95 percent confidence interval:
+ 0.01022522 0.05165005
+sample estimates:
+mean in group finishing    mean in group sweing 
+              0.7529507               0.7220130 </code></pre>
+</div>
+</div>
+</section>
+<section id="작업-공정별-다중회귀분석" class="level2">
+<h2 class="anchored" data-anchor-id="작업-공정별-다중회귀분석">작업 공정별 다중회귀분석</h2>
+<ul>
+<li>작업공정별 생산성에 영향을 미치는 변수를 확인하고자 데이터를 분리함</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>wp.f <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'finishing'</span>, ])</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>wp.s <span class="ot">&lt;-</span> <span class="fu">with</span>(wp, wp[department <span class="sc">==</span> <span class="st">'sweing'</span>, ])</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.f)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = actual_productivity ~ targeted_productivity + smv + 
+    wip + over_time + incentive + idle_time + idle_men + no_of_style_change + 
+    no_of_workers, data = wp.f)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.65160 -0.09939  0.03915  0.13220  0.36853 
+
+Coefficients: (4 not defined because of singularities)
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            2.237e-01  8.852e-02   2.527 0.011824 *  
+targeted_productivity  2.351e-01  8.962e-02   2.623 0.008973 ** 
+smv                    5.469e-02  1.412e-02   3.873 0.000122 ***
+wip                           NA         NA      NA       NA    
+over_time             -2.347e-05  6.024e-06  -3.896 0.000111 ***
+incentive             -1.089e-05  3.421e-05  -0.318 0.750272    
+idle_time                     NA         NA      NA       NA    
+idle_men                      NA         NA      NA       NA    
+no_of_style_change            NA         NA      NA       NA    
+no_of_workers          1.840e-02  2.678e-03   6.871  1.9e-11 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.184 on 500 degrees of freedom
+Multiple R-squared:  0.1363,    Adjusted R-squared:  0.1277 
+F-statistic: 15.79 on 5 and 500 DF,  p-value: 1.909e-14</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp.s)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = actual_productivity ~ targeted_productivity + smv + 
+    wip + over_time + incentive + idle_time + idle_men + no_of_style_change + 
+    no_of_workers, data = wp.s)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.34169 -0.01972  0.00376  0.03063  0.35304 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            1.313e-01  2.672e-02   4.912 1.13e-06 ***
+targeted_productivity  6.365e-01  3.079e-02  20.669  &lt; 2e-16 ***
+smv                   -2.787e-03  4.782e-04  -5.827 8.70e-09 ***
+wip                   -9.849e-08  1.462e-06  -0.067 0.946319    
+over_time             -3.137e-06  1.062e-06  -2.954 0.003245 ** 
+incentive              3.183e-03  1.203e-04  26.458  &lt; 2e-16 ***
+idle_time              6.624e-04  1.925e-04   3.441 0.000614 ***
+idle_men              -6.134e-03  7.678e-04  -7.988 5.85e-15 ***
+no_of_style_change     4.445e-03  5.621e-03   0.791 0.429355    
+no_of_workers          1.441e-03  3.734e-04   3.860 0.000124 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.06947 on 681 degrees of freedom
+Multiple R-squared:  0.8012,    Adjusted R-squared:  0.7986 
+F-statistic: 304.9 on 9 and 681 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="팀별-다중회귀분석" class="level2">
+<h2 class="anchored" data-anchor-id="팀별-다중회귀분석">팀별 다중회귀분석</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.f, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(no_of_workers<span class="sc">~</span>team, <span class="at">data=</span>wp.s, <span class="at">col=</span><span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+team          11   3.15 0.28668   10.21 &lt;2e-16 ***
+Residuals   1185  33.26 0.02807                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>model.f <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.f)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+team         11  2.068  0.1880   5.297 6.09e-08 ***
+Residuals   494 17.535  0.0355                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>model.s <span class="ot">&lt;-</span> <span class="fu">aov</span>(actual_productivity<span class="sc">~</span>team, <span class="at">data=</span>wp.s)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+team         11  1.904 0.17307   8.034 2.93e-13 ***
+Residuals   679 14.627 0.02154                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="사후-검정-1" class="level2">
+<h2 class="anchored" data-anchor-id="사후-검정-1">사후 검정</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ team 
+            1         2        3         4        5        6        7         8
+      0.08596   0.03576  0.06879   0.03494 -0.03711 -0.04971 -0.06709  -0.06094
+rep 105.00000 109.00000 95.00000 105.00000 93.00000 94.00000 96.00000 109.00000
+             9        10       11       12
+    -6.292e-04  -0.01535 -0.05311  0.04396
+rep  1.040e+02 100.00000 88.00000 99.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = actual_productivity ~ team, data = wp)
+
+$team
+               diff         lwr          upr     p adj
+2-1   -0.0501992539 -0.12521624  0.024817728 0.5563323
+3-1   -0.0171745606 -0.09485634  0.060507215 0.9998929
+4-1   -0.0510195576 -0.12673439  0.024695271 0.5451284
+5-1   -0.1230735916 -0.20119266 -0.044954521 0.0000188
+6-1   -0.1356691471 -0.21356755 -0.057770743 0.0000010
+7-1   -0.1530488768 -0.23051795 -0.075579804 0.0000000
+8-1   -0.1469062759 -0.22192326 -0.071889294 0.0000000
+9-1   -0.0865924694 -0.16248909 -0.010695852 0.0105822
+10-1  -0.1013181823 -0.17797360 -0.024662761 0.0009871
+11-1  -0.1390698133 -0.21835705 -0.059782580 0.0000008
+12-1  -0.0419989753 -0.11885244  0.034854486 0.8237724
+3-2    0.0330246933 -0.04397706  0.110026449 0.9627477
+4-2   -0.0008203037 -0.07583729  0.074196678 1.0000000
+5-2   -0.0728743377 -0.15031723  0.004568553 0.0879147
+6-2   -0.0854698932 -0.16269019 -0.008249601 0.0158001
+7-2   -0.1028496229 -0.17963679 -0.026062453 0.0007665
+8-2   -0.0967070220 -0.17101960 -0.022394441 0.0013155
+9-2   -0.0363932155 -0.11159367  0.038807241 0.9145929
+10-2  -0.0511189284 -0.12708514  0.024847287 0.5473412
+11-2  -0.0888705594 -0.16749166 -0.010249458 0.0120010
+12-2   0.0082002786 -0.06796577  0.084366326 0.9999999
+4-3   -0.0338449970 -0.11152677  0.043836778 0.9582587
+5-3   -0.1058990310 -0.18592598 -0.025872085 0.0009655
+6-3   -0.1184945865 -0.19830614 -0.038683032 0.0000839
+7-3   -0.1358743163 -0.21526689 -0.056481746 0.0000017
+8-3   -0.1297317153 -0.20673347 -0.052729959 0.0000028
+9-3   -0.0694179088 -0.14727688  0.008441063 0.1352430
+10-3  -0.0841436218 -0.16274246 -0.005544788 0.0237921
+11-3  -0.1218952527 -0.20306291 -0.040727597 0.0000637
+12-3  -0.0248244148 -0.10361640  0.053967574 0.9969672
+5-4   -0.0720540340 -0.15017310  0.006065037 0.1039056
+6-4   -0.0846495895 -0.16254799 -0.006751186 0.0198803
+7-4   -0.1020293192 -0.17949839 -0.024560246 0.0010552
+8-4   -0.0958867183 -0.17090370 -0.020869737 0.0018122
+9-4   -0.0355729118 -0.11146953  0.040323706 0.9307618
+10-4  -0.0502986247 -0.12695405  0.026356797 0.5875257
+11-4  -0.0880502557 -0.16733749 -0.008763022 0.0151406
+12-4   0.0090205823 -0.06783288  0.085874044 0.9999998
+6-5   -0.0125955555 -0.09283280  0.067641688 0.9999967
+7-5   -0.0299752853 -0.10979578  0.049845208 0.9865663
+8-5   -0.0238326843 -0.10127558  0.053610207 0.9975400
+9-5    0.0364811222 -0.04181415  0.114776399 0.9334452
+10-5   0.0217554092 -0.05727565  0.100786464 0.9991133
+11-5  -0.0159962217 -0.09758249  0.065590047 0.9999679
+12-5   0.0810746162  0.00185146  0.160297772 0.0394078
+7-6   -0.0173797298 -0.09698427  0.062224813 0.9999055
+8-6   -0.0112371288 -0.08845742  0.065983163 0.9999985
+9-6    0.0490766777 -0.02899843  0.127151786 0.6527530
+10-6   0.0343509647 -0.04446198  0.113163906 0.9581441
+11-6  -0.0034006662 -0.08477567  0.077974339 1.0000000
+12-6   0.0936701717  0.01466460  0.172675745 0.0061147
+8-7    0.0061426010 -0.07064457  0.082929771 1.0000000
+9-7    0.0664564074 -0.01119035  0.144103162 0.1800490
+10-7   0.0517306945 -0.02665792  0.130119314 0.5785186
+11-7   0.0139790635 -0.06698505  0.094943175 0.9999913
+12-7   0.1110499015  0.03246761  0.189632193 0.0002567
+9-8    0.0603138065 -0.01488665  0.135514263 0.2659675
+10-8   0.0455880936 -0.03037812  0.121554309 0.7171342
+11-8   0.0078364626 -0.07078464  0.086457564 1.0000000
+12-8   0.1049073006  0.02874125  0.181073348 0.0004400
+10-9  -0.0147257129 -0.09156070  0.062109272 0.9999745
+11-9  -0.0524773439 -0.13193819  0.026983506 0.5773404
+12-9   0.0445934941 -0.03243907  0.121626057 0.7620180
+11-10 -0.0377516310 -0.11793756  0.042434302 0.9286714
+12-10  0.0593192070 -0.01846108  0.137099493 0.3424569
+12-11  0.0970708380  0.01669556  0.177446112 0.0046180</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.f, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ team 
+           1        2        3        4        5      6        7        8
+     0.07485  0.02718  0.09438  0.06769  0.03865 -0.125 -0.06711 -0.06029
+rep 49.00000 52.00000 37.00000 46.00000 35.00000 35.000 41.00000 53.00000
+           9       10       11       12
+    -0.02842 -0.02953 -0.05913  0.03938
+rep 46.00000 43.00000 29.00000 40.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = actual_productivity ~ team, data = wp.f)
+
+$team
+               diff         lwr           upr     p adj
+2-1   -0.0476730032 -0.17084987  7.550386e-02 0.9823226
+3-1    0.0195248891 -0.11522192  1.542717e-01 0.9999985
+4-1   -0.0071594231 -0.13417384  1.198550e-01 1.0000000
+5-1   -0.0362023496 -0.17312514  1.007204e-01 0.9993642
+6-1   -0.1998770300 -0.33679982 -6.295424e-02 0.0001366
+7-1   -0.1419581078 -0.27290628 -1.100993e-02 0.0206371
+8-1   -0.1351460327 -0.25775784 -1.253423e-02 0.0168349
+9-1   -0.1032754305 -0.23028985  2.373899e-02 0.2444769
+10-1  -0.1043851378 -0.23366468  2.489441e-02 0.2542293
+11-1  -0.1339774537 -0.27892752  1.097262e-02 0.1016425
+12-1  -0.0354697820 -0.16730612  9.636656e-02 0.9992510
+3-2    0.0671978923 -0.06586613  2.002619e-01 0.8859262
+4-2    0.0405135801 -0.08471418  1.657413e-01 0.9960113
+5-2    0.0114706537 -0.12379642  1.467377e-01 1.0000000
+6-2   -0.1522040268 -0.28747110 -1.693695e-02 0.0129279
+7-2   -0.0942851045 -0.22350103  3.493082e-02 0.4106105
+8-2   -0.0874730295 -0.20823306  3.328700e-02 0.4225936
+9-2   -0.0556024273 -0.18083019  6.962533e-02 0.9508776
+10-2  -0.0567121346 -0.18423676  7.081250e-02 0.9503292
+11-2  -0.0863044505 -0.22969153  5.708263e-02 0.7092429
+12-2   0.0122032213 -0.11791269  1.423191e-01 1.0000000
+4-3   -0.0266843123 -0.16330845  1.099398e-01 0.9999674
+5-3   -0.0557272387 -0.20160851  9.015403e-02 0.9840537
+6-3   -0.2194019191 -0.36528319 -7.352065e-02 0.0000685
+7-3   -0.1614829969 -0.30177169 -2.119430e-02 0.0095269
+8-3   -0.1546709218 -0.28721204 -2.212980e-02 0.0078650
+9-3   -0.1228003196 -0.25942446  1.382382e-02 0.1265276
+10-3  -0.1239100269 -0.26264248  1.482243e-02 0.1326484
+11-3  -0.1535023428 -0.30694294 -6.174708e-05 0.0498004
+12-3  -0.0549946711 -0.19611276  8.612341e-02 0.9813419
+5-4   -0.0290429264 -0.16781361  1.097278e-01 0.9999347
+6-4   -0.1927176069 -0.33148829 -5.394692e-02 0.0003978
+7-4   -0.1347986846 -0.26767787 -1.919501e-03 0.0432511
+8-4   -0.1279866096 -0.25265861 -3.314613e-03 0.0382006
+9-4   -0.0961160074 -0.22512033  3.288831e-02 0.3767022
+10-4  -0.0972257147 -0.22846082  3.400939e-02 0.3858539
+11-4  -0.1268180306 -0.27351491  1.987885e-02 0.1671619
+12-4  -0.0283103588 -0.16206488  1.054442e-01 0.9999270
+6-5   -0.1636746805 -0.31156820 -1.578116e-02 0.0159991
+7-5   -0.1057557582 -0.24813577  3.662425e-02 0.3816679
+8-5   -0.0989436831 -0.23369641  3.580904e-02 0.4003712
+9-5   -0.0670730809 -0.20584377  7.169761e-02 0.9132045
+10-5  -0.0681827883 -0.20902966  7.266409e-02 0.9123351
+11-5  -0.0977751042 -0.25313007  5.757986e-02 0.6468137
+12-5   0.0007325676 -0.14246472  1.439299e-01 1.0000000
+7-6    0.0579189222 -0.08446109  2.002989e-01 0.9740504
+8-6    0.0647309973 -0.07002173  1.994837e-01 0.9165719
+9-6    0.0966015995 -0.04216909  2.353723e-01 0.4880385
+10-6   0.0954918922 -0.04535498  2.363388e-01 0.5311844
+11-6   0.0658995763 -0.08945539  2.212545e-01 0.9645728
+12-6   0.1644072480  0.02120996  3.076045e-01 0.0098697
+8-7    0.0068120751 -0.12186531  1.354895e-01 1.0000000
+9-7    0.0386826773 -0.09419651  1.715619e-01 0.9984459
+10-7   0.0375729700 -0.09747301  1.726189e-01 0.9989756
+11-7   0.0079806541 -0.14213510  1.580964e-01 1.0000000
+12-7   0.1064883258 -0.03100726  2.439839e-01 0.3156544
+9-8    0.0318706022 -0.09280139  1.565426e-01 0.9995382
+10-8   0.0307608949 -0.09621802  1.577398e-01 0.9997245
+11-8   0.0011685790 -0.14173337  1.440705e-01 1.0000000
+12-8   0.0996762507 -0.02990486  2.292574e-01 0.3261777
+10-9  -0.0011097073 -0.13234481  1.301254e-01 1.0000000
+11-9  -0.0307020232 -0.17739891  1.159949e-01 0.9999347
+12-9   0.0678056485 -0.06594888  2.015602e-01 0.8832550
+11-10 -0.0295923159 -0.17825473  1.190701e-01 0.9999606
+12-10  0.0689153559 -0.06699201  2.048227e-01 0.8830674
+12-11  0.0985076717 -0.05238346  2.493988e-01 0.5913587</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.f), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(model.s, <span class="at">type =</span> <span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ team 
+           1        2        3         4        5         6        7        8
+     0.09314  0.04038  0.05415  0.008564 -0.08053 -0.002542 -0.06731 -0.06538
+rep 56.00000 57.00000 58.00000 59.000000 58.00000 59.000000 55.00000 56.00000
+           9        10       11       12
+     0.02033 -0.005054 -0.04585  0.04804
+rep 58.00000 57.000000 59.00000 59.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model.s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = actual_productivity ~ team, data = wp.s)
+
+$team
+              diff          lwr           upr     p adj
+2-1   -0.052755482 -0.143321948  0.0378109847 0.7525821
+3-1   -0.038986486 -0.129165204  0.0511922329 0.9598987
+4-1   -0.084572226 -0.174374751  0.0052302979 0.0871304
+5-1   -0.173663403 -0.263842121 -0.0834846842 0.0000000
+6-1   -0.095678215 -0.185480739 -0.0058756902 0.0252520
+7-1   -0.160442340 -0.251821208 -0.0690634719 0.0000008
+8-1   -0.158518522 -0.249484842 -0.0675522010 0.0000011
+9-1   -0.072808500 -0.162987218  0.0173702188 0.2553190
+10-1  -0.098190584 -0.188757051 -0.0076241178 0.0205339
+11-1  -0.138985068 -0.228787592 -0.0491825433 0.0000320
+12-1  -0.045095920 -0.134898444  0.0447066048 0.8909155
+3-2    0.013768996 -0.076006360  0.1035443531 0.9999974
+4-2   -0.031816745 -0.121214210  0.0575807207 0.9911722
+5-2   -0.120907921 -0.210683278 -0.0311325641 0.0007105
+6-2   -0.042922733 -0.132320198  0.0464747325 0.9177817
+7-2   -0.107686858 -0.198667686 -0.0167060307 0.0063453
+8-2   -0.105763040 -0.196329506 -0.0151965730 0.0077146
+9-2   -0.020053018 -0.109828375  0.0697223389 0.9998782
+10-2  -0.045435103 -0.135599942  0.0447297370 0.8885782
+11-2  -0.086229586 -0.175627051  0.0031678794 0.0705302
+12-2   0.007659562 -0.081737903  0.0970570276 1.0000000
+4-3   -0.045585741 -0.134590365  0.0434188836 0.8770844
+5-3   -0.134676917 -0.224061094 -0.0452927403 0.0000623
+6-3   -0.056691729 -0.145696353  0.0323128955 0.6309671
+7-3   -0.121455855 -0.212050707 -0.0308610017 0.0007758
+8-3   -0.119532036 -0.209710754 -0.0293533175 0.0009620
+9-3   -0.033822014 -0.123206191  0.0555621627 0.9854538
+10-3  -0.059204099 -0.148979456  0.0305712579 0.5774261
+11-3  -0.099998582 -0.189003207 -0.0109939576 0.0131031
+12-3  -0.006109434 -0.095114058  0.0828951905 1.0000000
+5-4   -0.089091176 -0.178095801 -0.0000865518 0.0495172
+6-4   -0.011105988 -0.099729435  0.0775174585 0.9999997
+7-4   -0.075870114 -0.166090508  0.0143502802 0.2008133
+8-4   -0.073946295 -0.163748819  0.0158562292 0.2281726
+9-4    0.011763727 -0.077240898  0.1007683512 0.9999995
+10-4  -0.013618358 -0.103015823  0.0757791072 0.9999976
+11-4  -0.054412841 -0.143036288  0.0342106054 0.6841135
+12-4   0.039476307 -0.049147140  0.1280997535 0.9504146
+6-5    0.077985188 -0.011019436  0.1669898126 0.1528402
+7-5    0.013221063 -0.077373790  0.1038159155 0.9999984
+8-5    0.015144881 -0.075033837  0.1053235997 0.9999932
+9-5    0.100854903  0.011470726  0.1902390799 0.0123855
+10-5   0.075472818 -0.014302538  0.1652481750 0.2011974
+11-5   0.034678335 -0.054326289  0.1236829595 0.9816644
+12-5   0.128567483  0.039562859  0.2175721077 0.0001659
+7-6   -0.064764126 -0.154984520  0.0254562683 0.4391040
+8-6   -0.062840307 -0.152642831  0.0269622173 0.4812375
+9-6    0.022869715 -0.066134910  0.1118743393 0.9995256
+10-6  -0.002512370 -0.091909835  0.0868850953 1.0000000
+11-6  -0.043306853 -0.131930300  0.0453165935 0.9079672
+12-6   0.050582295 -0.038041152  0.1392057417 0.7764183
+8-7    0.001923819 -0.089455050  0.0933026869 1.0000000
+9-7    0.087633840 -0.002961012  0.1782286933 0.0687173
+10-7   0.062251756 -0.028729072  0.1532325833 0.5181122
+11-7   0.021457272 -0.068763121  0.1116776664 0.9997747
+12-7   0.115346421  0.025126027  0.2055668146 0.0018448
+9-8    0.085710022 -0.004468697  0.1758887403 0.0804653
+10-8   0.060327937 -0.030238529  0.1508944037 0.5614928
+11-8   0.019533454 -0.070269070  0.1093359782 0.9999064
+12-8   0.113422602  0.023620078  0.2032251264 0.0022731
+10-9  -0.025382085 -0.115157441  0.0643932720 0.9988359
+11-9  -0.066176568 -0.155181192  0.0228280565 0.3815396
+12-9   0.027712580 -0.061292044  0.1167172047 0.9972077
+11-10 -0.040794483 -0.130191948  0.0486029819 0.9413929
+12-10  0.053094665 -0.036302800  0.1424921301 0.7284701
+12-11  0.093889148  0.005265702  0.1825125948 0.0269557</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model.s), <span class="at">col=</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="productivity_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="다중회귀분석" class="level2">
+<h2 class="anchored" data-anchor-id="다중회귀분석">다중회귀분석</h2>
+<ul>
+<li>수치형 독립변수에 따라 실제 생산성에 차이가 있는지 검정</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(actual_productivity<span class="sc">~</span>targeted_productivity<span class="sc">+</span>smv<span class="sc">+</span>wip<span class="sc">+</span>over_time<span class="sc">+</span>incentive<span class="sc">+</span>idle_time<span class="sc">+</span>idle_men<span class="sc">+</span>no_of_style_change<span class="sc">+</span>no_of_workers,<span class="at">data=</span>wp)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = actual_productivity ~ targeted_productivity + smv + 
+    wip + over_time + incentive + idle_time + idle_men + no_of_style_change + 
+    no_of_workers, data = wp)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.54582 -0.06164  0.01299  0.08214  0.51274 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            2.220e-01  3.533e-02   6.285 4.61e-10 ***
+targeted_productivity  6.955e-01  4.620e-02  15.053  &lt; 2e-16 ***
+smv                   -6.344e-03  9.823e-04  -6.459 1.53e-10 ***
+wip                    5.314e-06  3.163e-06   1.680   0.0932 .  
+over_time             -3.834e-06  2.045e-06  -1.875   0.0610 .  
+incentive              5.175e-05  2.755e-05   1.878   0.0606 .  
+idle_time              4.786e-04  4.197e-04   1.140   0.2544    
+idle_men              -8.992e-03  1.657e-03  -5.425 7.01e-08 ***
+no_of_style_change    -4.637e-02  1.171e-02  -3.960 7.94e-05 ***
+no_of_workers          3.477e-03  5.403e-04   6.436 1.78e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1517 on 1187 degrees of freedom
+Multiple R-squared:  0.2502,    Adjusted R-squared:  0.2445 
+F-statistic:    44 on 9 and 1187 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">step</span>(model, <span class="at">direction=</span><span class="st">'backward'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=-4505.32
+actual_productivity ~ targeted_productivity + smv + wip + over_time + 
+    incentive + idle_time + idle_men + no_of_style_change + no_of_workers
+
+                        Df Sum of Sq    RSS     AIC
+- idle_time              1    0.0299 27.334 -4506.0
+&lt;none&gt;                               27.304 -4505.3
+- wip                    1    0.0649 27.369 -4504.5
+- over_time              1    0.0809 27.385 -4503.8
+- incentive              1    0.0812 27.385 -4503.8
+- no_of_style_change     1    0.3607 27.665 -4491.6
+- idle_men               1    0.6770 27.981 -4478.0
+- no_of_workers          1    0.9527 28.256 -4466.3
+- smv                    1    0.9596 28.263 -4466.0
+- targeted_productivity  1    5.2121 32.516 -4298.2
+
+Step:  AIC=-4506.01
+actual_productivity ~ targeted_productivity + smv + wip + over_time + 
+    incentive + idle_men + no_of_style_change + no_of_workers
+
+                        Df Sum of Sq    RSS     AIC
+&lt;none&gt;                               27.334 -4506.0
+- wip                    1    0.0645 27.398 -4505.2
+- over_time              1    0.0769 27.411 -4504.6
+- incentive              1    0.0812 27.415 -4504.5
+- no_of_style_change     1    0.3861 27.720 -4491.2
+- idle_men               1    0.7707 28.104 -4474.7
+- no_of_workers          1    0.9499 28.284 -4467.1
+- smv                    1    0.9590 28.293 -4466.7
+- targeted_productivity  1    5.1859 32.520 -4300.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = actual_productivity ~ targeted_productivity + smv + 
+    wip + over_time + incentive + idle_men + no_of_style_change + 
+    no_of_workers, data = wp)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.54555 -0.06296  0.01299  0.08227  0.51181 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            2.238e-01  3.530e-02   6.340 3.26e-10 ***
+targeted_productivity  6.929e-01  4.615e-02  15.013  &lt; 2e-16 ***
+smv                   -6.342e-03  9.824e-04  -6.456 1.56e-10 ***
+wip                    5.299e-06  3.164e-06   1.675   0.0942 .  
+over_time             -3.735e-06  2.043e-06  -1.828   0.0678 .  
+incentive              5.176e-05  2.755e-05   1.878   0.0606 .  
+idle_men              -7.927e-03  1.370e-03  -5.788 9.12e-09 ***
+no_of_style_change    -4.773e-02  1.165e-02  -4.096 4.48e-05 ***
+no_of_workers          3.472e-03  5.404e-04   6.425 1.90e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1517 on 1188 degrees of freedom
+Multiple R-squared:  0.2494,    Adjusted R-squared:  0.2443 
+F-statistic: 49.33 on 8 and 1188 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="회귀-모델" class="level2">
+<h2 class="anchored" data-anchor-id="회귀-모델">회귀 모델</h2>
+<ul>
+<li>생산성 = 0.224 + 0.7 × 목표생산성 - 0.0063 × 표준시간 + 0.0000053 × 재공품 - 0.0000037 × 초과근무 + 0.000052 × 인센티브 - 0.008 × 유휴 작업자 - 0.048 × 작업 변경 횟수 + 0.0035 × 총 작업자 수</li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
