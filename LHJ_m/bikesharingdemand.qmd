@@ -7,8 +7,8 @@ editor: visual
 ## train/test file
 
 ```{r}
-df <- read.csv("../train.csv", header = T)
-df1 <- read.csv("../test.csv", header = T)
+df <- read.csv("./train.csv", header = T)
+df1 <- read.csv("./test.csv", header = T)
 str(df)
 str(df1)
 ```
@@ -42,17 +42,19 @@ for (i in 1:length(alldf)){
 
 ## 일원분산분석
 
-##### 계절이나 날씨 (독립변수, 범주형 변수)가 count 자전거 대여량 분산 분석을 사용하기 위해서는 정규성과 등분산성이 가정이 되야함. 그러나 자전거 데이터는 표본 크기가 커서 정규성 가정에 크게 제한을 받지 않는다.
+##### 계절이나 날씨 (독립변수, 범주형 변수)가 count 자전거 대여량(종속변수, 수치형 변수)에 미치는 영향 (집단 간 차이)를 알고 싶어서 일원분산분석을 실시. 그러나 분산 분석을 사용하기 위해서는 정규성과 등분산성이 가정이 되야함. 그러나 자전거 데이터는 정규성 표본 크기가 커서 정규성 가정에 크게 제한을 받지 않아서 생략.
+
+##### bartlett 검정 - 집단 간 분산의 동일성 여부 확인
 
 ```{r}
 library(car)
 bartlett.test(count ~ season, data = alldf)
 bartlett.test(count ~ weather, data = alldf)
 bartlett.test(count ~ holiday, data = alldf)
-bartlett.test(count ~ workingday , data = alldf)
+bartlett.test(count ~ workingday, data = alldf)
 ```
 
-##### 집단 간 분산이 같다는 귀무가설을 기각하고 등분산성이 아니기에 oneway.test 함수를 사용함.
+##### 그 결과 season과 weather, workingday는 p값이 0.05보다 작기에 집단 간 분산이 같다는 귀무가설을 기각하고 등분산성을 충족하지 못했기에 oneway.test 함수를 사용함. 그리고 holiday는 등분산성 가정이 됐기에 aov 가정이 성립.
 
 ```{r}
 oneway.test(count ~ season, data = alldf)
@@ -61,12 +63,6 @@ oneway.test(count ~ workingday, data = alldf)
 ```
 
 ```{r}
-se <- aov(count ~ season, data = alldf,)
-summary(se)
-we <- aov(count ~ weather, data = alldf,)
-summary(we)
-wo <- aov(count ~ weather, data = alldf,)
-summary(we)
 ho <- aov(count ~ holiday, data = alldf,)
 summary(ho)
 ```
@@ -95,6 +91,13 @@ boxplot(count~weather ,data = alldf, col = 'tomato',
 boxplot(count~holiday ,data = alldf, col = 'tomato',
         main ='count & holiday')
 par(mfrow = c(1,1))
+```
+
+## 상관분석
+
+```{r}
+library(psych)
+pairs.panels(alldf)
 ```
 
 ### 다중회귀분석
@@ -139,24 +142,23 @@ model5 <- lm(count ~ atemp + windspeed, data = alldf)
 summary(model5)
 ```
 
-``` {#{r}
-#model6 <- lm(count ~ humidity + weather, data = alldf)
-#summary(model6)
-
-#model7 <- lm(count ~ weather, data = alldf)
-#summary(model7)
-```
-
 ### 후진선택법
 
 ```{r}
-mod.selected <- step(model1[, ], direction = "backward")
+mod.selected <- step(model1, direction = "backward")
 summary(mod.selected)
 ```
 
-### 상관분석
+## 결론
 
-```{r}
-library(psych)
-pairs.panels(alldf)
-```
+#### 일원분산분석 결과
+
+##### season 에서는 봄에 자전거 대여량 개수가 저조했기에 자전거 대여비를 할인해준다던지, 쿠폰제 같은 프로모션을 통해 봄의 대여량을 증가
+
+##### weather 에서는 4번 매우 좋지않음의 수 가 다른 날씨에 비해 매우 적어서 그런지 차이가 컸습니다. 따라서 4번을 배제시켜도 다른 날씨에 조금 더 개선
+
+##### holiday 에서는 쉬는 날 자전거 대여량이 평일에 비해 저조하기에 휴일에 조금 더 자전거를 이용할 수 있게 휴일 이벤트 필요
+
+#### 다중회기분석 결과
+
+##### 풍속과 기온이 대여에 영향을 받은 것으로 보여지기에 사람들이 자전거를 타기 좋은 날씨는 풍속과 기온이 내려갈 수록 자전거 대여가 많아지는 것을 알 수 있었고 따라서대여 어플에 조금 더 정확한 풍속과 기온을 보여주면 좋을 것 같습니다.
