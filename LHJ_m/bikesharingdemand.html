@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="HO JIN">
+
+<title>Bike Sharing Demand</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="bikesharingdemand_files/libs/clipboard/clipboard.min.js"></script>
+<script src="bikesharingdemand_files/libs/quarto-html/quarto.js"></script>
+<script src="bikesharingdemand_files/libs/quarto-html/popper.min.js"></script>
+<script src="bikesharingdemand_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="bikesharingdemand_files/libs/quarto-html/anchor.min.js"></script>
+<link href="bikesharingdemand_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="bikesharingdemand_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="bikesharingdemand_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="bikesharingdemand_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="bikesharingdemand_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bike Sharing Demand</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>HO JIN </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="traintest-file" class="level2">
+<h2 class="anchored" data-anchor-id="traintest-file">train/test file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./train.csv"</span>, <span class="at">header =</span> T)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./test.csv"</span>, <span class="at">header =</span> T)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   10886 obs. of  12 variables:
+ $ datetime  : chr  "2011-01-01 00:00:00" "2011-01-01 01:00:00" "2011-01-01 02:00:00" "2011-01-01 03:00:00" ...
+ $ season    : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ holiday   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ workingday: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ weather   : int  1 1 1 1 1 2 1 1 1 1 ...
+ $ temp      : num  9.84 9.02 9.02 9.84 9.84 ...
+ $ atemp     : num  14.4 13.6 13.6 14.4 14.4 ...
+ $ humidity  : int  81 80 80 75 75 75 80 86 75 76 ...
+ $ windspeed : num  0 0 0 0 0 ...
+ $ casual    : int  3 8 5 3 0 0 2 1 1 8 ...
+ $ registered: int  13 32 27 10 1 1 0 2 7 6 ...
+ $ count     : int  16 40 32 13 1 1 2 3 8 14 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   6493 obs. of  9 variables:
+ $ datetime  : chr  "2011-01-20 00:00:00" "2011-01-20 01:00:00" "2011-01-20 02:00:00" "2011-01-20 03:00:00" ...
+ $ season    : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ holiday   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ workingday: int  1 1 1 1 1 1 1 1 1 1 ...
+ $ weather   : int  1 1 1 1 1 1 1 1 1 2 ...
+ $ temp      : num  10.7 10.7 10.7 10.7 10.7 ...
+ $ atemp     : num  11.4 13.6 13.6 12.9 12.9 ...
+ $ humidity  : int  56 56 56 56 56 60 60 55 55 52 ...
+ $ windspeed : num  26 0 0 11 11 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="train-test-데이터-합치기" class="level2">
+<h2 class="anchored" data-anchor-id="train-test-데이터-합치기">train, test 데이터 합치기</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>alldf <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df, df1)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   17379 obs. of  12 variables:
+ $ datetime  : chr  "2011-01-01 00:00:00" "2011-01-01 01:00:00" "2011-01-01 02:00:00" "2011-01-01 03:00:00" ...
+ $ season    : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ holiday   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ workingday: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ weather   : int  1 1 1 1 1 2 1 1 1 1 ...
+ $ temp      : num  9.84 9.02 9.02 9.84 9.84 ...
+ $ atemp     : num  14.4 13.6 13.6 14.4 14.4 ...
+ $ humidity  : int  81 80 80 75 75 75 80 86 75 76 ...
+ $ windspeed : num  0 0 0 0 0 ...
+ $ casual    : int  3 8 5 3 0 0 2 1 1 8 ...
+ $ registered: int  13 32 27 10 1 1 0 2 7 6 ...
+ $ count     : int  16 40 32 13 1 1 2 3 8 14 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   datetime             season         holiday          workingday    
+ Length:17379       Min.   :1.000   Min.   :0.00000   Min.   :0.0000  
+ Class :character   1st Qu.:2.000   1st Qu.:0.00000   1st Qu.:0.0000  
+ Mode  :character   Median :3.000   Median :0.00000   Median :1.0000  
+                    Mean   :2.502   Mean   :0.02877   Mean   :0.6827  
+                    3rd Qu.:3.000   3rd Qu.:0.00000   3rd Qu.:1.0000  
+                    Max.   :4.000   Max.   :1.00000   Max.   :1.0000  
+                                                                      
+    weather           temp           atemp          humidity     
+ Min.   :1.000   Min.   : 0.82   Min.   : 0.00   Min.   :  0.00  
+ 1st Qu.:1.000   1st Qu.:13.94   1st Qu.:16.66   1st Qu.: 48.00  
+ Median :1.000   Median :20.50   Median :24.24   Median : 63.00  
+ Mean   :1.425   Mean   :20.38   Mean   :23.79   Mean   : 62.72  
+ 3rd Qu.:2.000   3rd Qu.:27.06   3rd Qu.:31.06   3rd Qu.: 78.00  
+ Max.   :4.000   Max.   :41.00   Max.   :50.00   Max.   :100.00  
+                                                                 
+   windspeed          casual         registered        count      
+ Min.   : 0.000   Min.   :  0.00   Min.   :  0.0   Min.   :  1.0  
+ 1st Qu.: 7.002   1st Qu.:  4.00   1st Qu.: 36.0   1st Qu.: 42.0  
+ Median :12.998   Median : 17.00   Median :118.0   Median :145.0  
+ Mean   :12.737   Mean   : 36.02   Mean   :155.6   Mean   :191.6  
+ 3rd Qu.:16.998   3rd Qu.: 49.00   3rd Qu.:222.0   3rd Qu.:284.0  
+ Max.   :56.997   Max.   :367.00   Max.   :886.0   Max.   :977.0  
+                  NA's   :6493     NA's   :6493    NA's   :6493   </code></pre>
+</div>
+</div>
+</section>
+<section id="na-값-확인" class="level2">
+<h2 class="anchored" data-anchor-id="na-값-확인">na 값 확인</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(alldf)){</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">colnames</span>(alldf)[i],<span class="fu">sum</span>(<span class="fu">is.na</span>(alldf[,i])),<span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>datetime 0 
+season 0 
+holiday 0 
+workingday 0 
+weather 0 
+temp 0 
+atemp 0 
+humidity 0 
+windspeed 0 
+casual 6493 
+registered 6493 
+count 6493 </code></pre>
+</div>
+</div>
+</section>
+<section id="na-값-0으로-변경-및-변경-확인" class="level2">
+<h2 class="anchored" data-anchor-id="na-값-0으로-변경-및-변경-확인">na 값 0으로 변경 및 변경 확인</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>alldf[<span class="fu">is.na</span>(alldf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(alldf)){</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">colnames</span>(alldf)[i],<span class="fu">sum</span>(<span class="fu">is.na</span>(alldf[,i])),<span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>datetime 0 
+season 0 
+holiday 0 
+workingday 0 
+weather 0 
+temp 0 
+atemp 0 
+humidity 0 
+windspeed 0 
+casual 0 
+registered 0 
+count 0 </code></pre>
+</div>
+</div>
+</section>
+<section id="일원분산분석" class="level2">
+<h2 class="anchored" data-anchor-id="일원분산분석">일원분산분석</h2>
+<section id="계절이나-날씨-독립변수-범주형-변수가-count-자전거-대여량종속변수-수치형-변수에-미치는-영향-집단-간-차이를-알고-싶어서-일원분산분석을-실시.-그러나-분산-분석을-사용하기-위해서는-정규성과-등분산성이-가정이-되야함.-그러나-자전거-데이터는-정규성-표본-크기가-커서-정규성-가정에-크게-제한을-받지-않아서-생략." class="level5">
+<h5 class="anchored" data-anchor-id="계절이나-날씨-독립변수-범주형-변수가-count-자전거-대여량종속변수-수치형-변수에-미치는-영향-집단-간-차이를-알고-싶어서-일원분산분석을-실시.-그러나-분산-분석을-사용하기-위해서는-정규성과-등분산성이-가정이-되야함.-그러나-자전거-데이터는-정규성-표본-크기가-커서-정규성-가정에-크게-제한을-받지-않아서-생략.">계절이나 날씨 (독립변수, 범주형 변수)가 count 자전거 대여량(종속변수, 수치형 변수)에 미치는 영향 (집단 간 차이)를 알고 싶어서 일원분산분석을 실시. 그러나 분산 분석을 사용하기 위해서는 정규성과 등분산성이 가정이 되야함. 그러나 자전거 데이터는 정규성 표본 크기가 커서 정규성 가정에 크게 제한을 받지 않아서 생략.</h5>
+</section>
+<section id="bartlett-검정---집단-간-분산의-동일성-여부-확인" class="level5">
+<h5 class="anchored" data-anchor-id="bartlett-검정---집단-간-분산의-동일성-여부-확인">bartlett 검정 - 집단 간 분산의 동일성 여부 확인</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    recode</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(count <span class="sc">~</span> season, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  count by season
+Bartlett's K-squared = 1235.1, df = 3, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(count <span class="sc">~</span> weather, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  count by weather
+Bartlett's K-squared = 335.55, df = 3, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(count <span class="sc">~</span> holiday, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  count by holiday
+Bartlett's K-squared = 3.7999, df = 1, p-value = 0.05126</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(count <span class="sc">~</span> workingday, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  count by workingday
+Bartlett's K-squared = 16.604, df = 1, p-value = 4.606e-05</code></pre>
+</div>
+</div>
+</section>
+<section id="그-결과-season과-weather-workingday는-p값이-0.05보다-작기에-집단-간-분산이-같다는-귀무가설을-기각하고-등분산성을-충족하지-못했기에-oneway.test-함수를-사용함.-그리고-holiday는-등분산성-가정이-됐기에-aov-가정이-성립." class="level5">
+<h5 class="anchored" data-anchor-id="그-결과-season과-weather-workingday는-p값이-0.05보다-작기에-집단-간-분산이-같다는-귀무가설을-기각하고-등분산성을-충족하지-못했기에-oneway.test-함수를-사용함.-그리고-holiday는-등분산성-가정이-됐기에-aov-가정이-성립.">그 결과 season과 weather, workingday는 p값이 0.05보다 작기에 집단 간 분산이 같다는 귀무가설을 기각하고 등분산성을 충족하지 못했기에 oneway.test 함수를 사용함. 그리고 holiday는 등분산성 가정이 됐기에 aov 가정이 성립.</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(count <span class="sc">~</span> season, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  count and season
+F = 224.14, num df = 3.0, denom df = 9463.1, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(count <span class="sc">~</span> weather, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  count and weather
+F = 73.975, num df = 3.0000, denom df = 9.9978, p-value = 3.97e-07</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(count <span class="sc">~</span> workingday, <span class="at">data =</span> alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  count and workingday
+F = 0.43713, num df = 1, denom df = 11223, p-value = 0.5085</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ho <span class="ot">&lt;-</span> <span class="fu">aov</span>(count <span class="sc">~</span> holiday, <span class="at">data =</span> alldf,)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Df    Sum Sq Mean Sq F value Pr(&gt;F)
+holiday         1      9893    9893   0.339   0.56
+Residuals   17377 506429635   29144               </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'gplots'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    lowess</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotmeans</span>(count<span class="sc">~</span>season ,<span class="at">data =</span> alldf,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">barcol=</span><span class="st">'tomato'</span>, <span class="at">barwidth=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">'cornflowerblue'</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span><span class="st">'count &amp; season'</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotmeans</span>(count<span class="sc">~</span>weather ,<span class="at">data =</span> alldf,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">barcol=</span><span class="st">'tomato'</span>, <span class="at">barwidth=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">'cornflowerblue'</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span><span class="st">'count &amp; weather'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in arrows(x, li, x, pmax(y - gap, li), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped
+
+Warning in arrows(x, li, x, pmax(y - gap, li), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped
+
+Warning in arrows(x, li, x, pmax(y - gap, li), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in arrows(x, ui, x, pmin(y + gap, ui), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped
+
+Warning in arrows(x, ui, x, pmin(y + gap, ui), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped
+
+Warning in arrows(x, ui, x, pmin(y + gap, ui), col = barcol, lwd = lwd, : zero-
+length arrow is of indeterminate angle and so skipped</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotmeans</span>(count<span class="sc">~</span>holiday ,<span class="at">data =</span> alldf,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">barcol=</span><span class="st">'tomato'</span>, <span class="at">barwidth=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">'cornflowerblue'</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span><span class="st">'count &amp; holiday'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="bikesharingdemand_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(count<span class="sc">~</span>season ,<span class="at">data =</span> alldf, <span class="at">col =</span> <span class="st">'tomato'</span>,</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span><span class="st">'count &amp; season'</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(count<span class="sc">~</span>weather ,<span class="at">data =</span> alldf, <span class="at">col =</span> <span class="st">'tomato'</span>,</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span><span class="st">'count &amp; weather'</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(count<span class="sc">~</span>holiday ,<span class="at">data =</span> alldf, <span class="at">col =</span> <span class="st">'tomato'</span>,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span><span class="st">'count &amp; holiday'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="bikesharingdemand_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="상관분석" class="level2">
+<h2 class="anchored" data-anchor-id="상관분석">상관분석</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'psych'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:car':
+
+    logit</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="bikesharingdemand_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="다중회귀분석" class="level3">
+<h3 class="anchored" data-anchor-id="다중회귀분석">다중회귀분석</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>alldf <span class="ot">&lt;-</span> alldf[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(alldf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     season         holiday          workingday        weather     
+ Min.   :1.000   Min.   :0.00000   Min.   :0.0000   Min.   :1.000  
+ 1st Qu.:2.000   1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:1.000  
+ Median :3.000   Median :0.00000   Median :1.0000   Median :1.000  
+ Mean   :2.502   Mean   :0.02877   Mean   :0.6827   Mean   :1.425  
+ 3rd Qu.:3.000   3rd Qu.:0.00000   3rd Qu.:1.0000   3rd Qu.:2.000  
+ Max.   :4.000   Max.   :1.00000   Max.   :1.0000   Max.   :4.000  
+      temp           atemp          humidity        windspeed     
+ Min.   : 0.82   Min.   : 0.00   Min.   :  0.00   Min.   : 0.000  
+ 1st Qu.:13.94   1st Qu.:16.66   1st Qu.: 48.00   1st Qu.: 7.002  
+ Median :20.50   Median :24.24   Median : 63.00   Median :12.998  
+ Mean   :20.38   Mean   :23.79   Mean   : 62.72   Mean   :12.737  
+ 3rd Qu.:27.06   3rd Qu.:31.06   3rd Qu.: 78.00   3rd Qu.:16.998  
+ Max.   :41.00   Max.   :50.00   Max.   :100.00   Max.   :56.997  
+     casual         registered         count    
+ Min.   :  0.00   Min.   :  0.00   Min.   :  0  
+ 1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:  0  
+ Median :  3.00   Median : 23.00   Median : 28  
+ Mean   : 22.56   Mean   : 97.44   Mean   :120  
+ 3rd Qu.: 26.00   3rd Qu.:155.00   3rd Qu.:192  
+ Max.   :367.00   Max.   :886.00   Max.   :977  </code></pre>
+</div>
+</div>
+<section id="count와-나머지-변수" class="level5">
+<h5 class="anchored" data-anchor-id="count와-나머지-변수">count와 나머지 변수</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> . , <span class="at">data =</span> alldf)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ ., data = alldf)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.410e-10 -9.500e-14 -2.900e-14  3.800e-14  3.159e-10 
+
+Coefficients:
+              Estimate Std. Error    t value Pr(&gt;|t|)    
+(Intercept)  5.392e-12  1.449e-13  3.721e+01  &lt; 2e-16 ***
+season      -2.670e-12  2.408e-14 -1.109e+02  &lt; 2e-16 ***
+holiday     -2.202e-12  1.522e-13 -1.447e+01  &lt; 2e-16 ***
+workingday  -2.939e-12  5.924e-14 -4.961e+01  &lt; 2e-16 ***
+weather     -1.360e-12  4.328e-14 -3.142e+01  &lt; 2e-16 ***
+temp         1.610e-13  2.058e-14  7.825e+00 5.35e-15 ***
+atemp       -4.868e-14  1.896e-14 -2.568e+00  0.01024 *  
+humidity     4.230e-14  1.562e-15  2.709e+01  &lt; 2e-16 ***
+windspeed   -1.076e-14  3.277e-15 -3.283e+00  0.00103 ** 
+casual       1.000e+00  8.133e-16  1.229e+15  &lt; 2e-16 ***
+registered   1.000e+00  2.285e-16  4.377e+15  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.241e-12 on 17368 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 4.823e+30 on 10 and 17368 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="count-와-temp" class="level5">
+<h5 class="anchored" data-anchor-id="count-와-temp">count 와 temp</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> temp <span class="sc">+</span> atemp, <span class="at">data =</span> alldf)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ temp + atemp, data = alldf)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-229.50 -115.33  -56.25   69.36  821.35 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   8.9130     3.8943   2.289  0.02211 *  
+temp          3.7205     1.0157   3.663  0.00025 ***
+atemp         1.4828     0.9332   1.589  0.11209    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 165.5 on 17376 degrees of freedom
+Multiple R-squared:  0.06054,   Adjusted R-squared:  0.06044 
+F-statistic: 559.9 on 2 and 17376 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="count-와-humidity" class="level5">
+<h5 class="anchored" data-anchor-id="count-와-humidity">count 와 humidity</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> humidity <span class="sc">+</span> windspeed, <span class="at">data =</span> alldf)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ humidity + windspeed, data = alldf)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-252.49 -110.53  -58.90   67.42  816.98 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 252.47627    5.38825  46.857   &lt;2e-16 ***
+humidity     -2.12417    0.06808 -31.203   &lt;2e-16 ***
+windspeed     0.05950    0.16023   0.371     0.71    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 165.7 on 17376 degrees of freedom
+Multiple R-squared:  0.05804,   Adjusted R-squared:  0.05793 
+F-statistic: 535.3 on 2 and 17376 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="count-와-humidity-temp" class="level5">
+<h5 class="anchored" data-anchor-id="count-와-humidity-temp">count 와 humidity, temp</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> humidity <span class="sc">+</span> temp, <span class="at">data =</span> alldf)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ humidity + temp, data = alldf)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-299.22 -104.75  -43.11   64.62  786.51 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 143.40143    5.39217   26.59   &lt;2e-16 ***
+humidity     -1.98925    0.06346  -31.35   &lt;2e-16 ***
+temp          4.97484    0.15507   32.08   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 161 on 17376 degrees of freedom
+Multiple R-squared:  0.1107,    Adjusted R-squared:  0.1106 
+F-statistic:  1081 on 2 and 17376 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="count-와-atemp-windspeed" class="level5">
+<h5 class="anchored" data-anchor-id="count-와-atemp-windspeed">count 와 atemp, windspeed</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> atemp <span class="sc">+</span> windspeed, <span class="at">data =</span> alldf)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ atemp + windspeed, data = alldf)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-263.55 -115.01  -51.78   68.56  833.47 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -21.5548     4.2697  -5.048  4.5e-07 ***
+atemp         4.9682     0.1458  34.070  &lt; 2e-16 ***
+windspeed     1.8346     0.1529  12.001  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 164.9 on 17376 degrees of freedom
+Multiple R-squared:  0.06755,   Adjusted R-squared:  0.06744 
+F-statistic: 629.4 on 2 and 17376 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="후진선택법" class="level3">
+<h3 class="anchored" data-anchor-id="후진선택법">후진선택법</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mod.selected <span class="ot">&lt;-</span> <span class="fu">step</span>(model1, <span class="at">direction =</span> <span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=-919522
+count ~ season + holiday + workingday + weather + temp + atemp + 
+    humidity + windspeed + casual + registered</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attempting model selection on an essentially perfect fit is nonsense</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum of Sq       RSS     AIC
+- season      1         0         0 -929634
+- workingday  1         0         0 -922675
+- temp        1         0         0 -922243
+- windspeed   1         0         0 -921132
+- humidity    1         0         0 -920904
+&lt;none&gt;                            0 -919522
+- atemp       1         0         0 -919462
+- holiday     1         0         0 -916585
+- weather     1         0         0 -915576
+- casual      1  15873743  15873743  118495
+- registered  1 201164640 201164640  162629
+
+Step:  AIC=-929633.6
+count ~ holiday + workingday + weather + temp + atemp + humidity + 
+    windspeed + casual + registered</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attempting model selection on an essentially perfect fit is nonsense</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum of Sq       RSS     AIC
+- weather     1         0         0 -949514
+- temp        1         0         0 -940518
+- workingday  1         0         0 -940482
+&lt;none&gt;                            0 -929634
+- windspeed   1         0         0 -925811
+- atemp       1         0         0 -925487
+- holiday     1         0         0 -925392
+- humidity    1         0         0 -924014
+- casual      1  15914806  15914806  118538
+- registered  1 203579221 203579221  162834
+
+Step:  AIC=-949514.1
+count ~ holiday + workingday + temp + atemp + humidity + windspeed + 
+    casual + registered</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attempting model selection on an essentially perfect fit is nonsense</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum of Sq       RSS     AIC
+- holiday     1         0         0 -950898
+- atemp       1         0         0 -950754
+&lt;none&gt;                            0 -949514
+- temp        1         0         0 -929142
+- humidity    1         0         0 -928528
+- workingday  1         0         0 -920527
+- windspeed   1         0         0 -915330
+- casual      1  15968785  15968785  118595
+- registered  1 203656488 203656488  162839
+
+Step:  AIC=-950897.6
+count ~ workingday + temp + atemp + humidity + windspeed + casual + 
+    registered</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attempting model selection on an essentially perfect fit is nonsense</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum of Sq       RSS     AIC
+&lt;none&gt;                            0 -950898
+- workingday  1         0         0 -949528
+- atemp       1         0         0 -948430
+- windspeed   1         0         0 -945234
+- temp        1         0         0 -944214
+- humidity    1         0         0 -930764
+- casual      1  15996057  15996057  118623
+- registered  1 203847705 203847705  162853</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = count ~ workingday + temp + atemp + humidity + windspeed + 
+    casual + registered, data = alldf)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.258e-11 -4.900e-14 -1.700e-14  1.400e-14  1.200e-10 
+
+Coefficients:
+              Estimate Std. Error    t value Pr(&gt;|t|)    
+(Intercept)  3.795e-12  5.675e-14  6.689e+01   &lt;2e-16 ***
+workingday  -1.644e-12  2.321e-14 -7.083e+01   &lt;2e-16 ***
+temp        -1.422e-13  8.335e-15 -1.706e+01   &lt;2e-16 ***
+atemp        1.649e-14  7.673e-15  2.149e+00   0.0316 *  
+humidity     7.756e-16  5.619e-16  1.380e+00   0.1675    
+windspeed   -2.687e-15  1.308e-15 -2.054e+00   0.0400 *  
+casual       1.000e+00  3.286e-16  3.044e+15   &lt;2e-16 ***
+registered   1.000e+00  9.204e-17  1.087e+16   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.314e-12 on 17371 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 4.19e+31 on 7 and 17371 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="결론" class="level2">
+<h2 class="anchored" data-anchor-id="결론">결론</h2>
+<section id="일원분산분석-결과" class="level4">
+<h4 class="anchored" data-anchor-id="일원분산분석-결과">일원분산분석 결과</h4>
+<section id="season-에서는-봄에-자전거-대여량-개수가-저조했기에-자전거-대여비를-할인해준다던지-쿠폰제-같은-프로모션을-통해-봄의-대여량을-증가" class="level5">
+<h5 class="anchored" data-anchor-id="season-에서는-봄에-자전거-대여량-개수가-저조했기에-자전거-대여비를-할인해준다던지-쿠폰제-같은-프로모션을-통해-봄의-대여량을-증가">season 에서는 봄에 자전거 대여량 개수가 저조했기에 자전거 대여비를 할인해준다던지, 쿠폰제 같은 프로모션을 통해 봄의 대여량을 증가</h5>
+</section>
+<section id="weather-에서는-4번-매우-좋지않음의-수-가-다른-날씨에-비해-매우-적어서-그런지-차이가-컸습니다.-따라서-4번을-배제시켜도-다른-날씨에-조금-더-개선" class="level5">
+<h5 class="anchored" data-anchor-id="weather-에서는-4번-매우-좋지않음의-수-가-다른-날씨에-비해-매우-적어서-그런지-차이가-컸습니다.-따라서-4번을-배제시켜도-다른-날씨에-조금-더-개선">weather 에서는 4번 매우 좋지않음의 수 가 다른 날씨에 비해 매우 적어서 그런지 차이가 컸습니다. 따라서 4번을 배제시켜도 다른 날씨에 조금 더 개선</h5>
+</section>
+<section id="holiday-에서는-쉬는-날-자전거-대여량이-평일에-비해-저조하기에-휴일에-조금-더-자전거를-이용할-수-있게-휴일-이벤트-필요" class="level5">
+<h5 class="anchored" data-anchor-id="holiday-에서는-쉬는-날-자전거-대여량이-평일에-비해-저조하기에-휴일에-조금-더-자전거를-이용할-수-있게-휴일-이벤트-필요">holiday 에서는 쉬는 날 자전거 대여량이 평일에 비해 저조하기에 휴일에 조금 더 자전거를 이용할 수 있게 휴일 이벤트 필요</h5>
+</section>
+</section>
+<section id="다중회기분석-결과" class="level4">
+<h4 class="anchored" data-anchor-id="다중회기분석-결과">다중회기분석 결과</h4>
+<section id="풍속과-기온이-대여에-영향을-받은-것으로-보여지기에-사람들이-자전거를-타기-좋은-날씨는-풍속과-기온이-내려갈-수록-자전거-대여가-많아지는-것을-알-수-있었고-따라서대여-어플에-조금-더-정확한-풍속과-기온을-보여주면-좋을-것-같습니다." class="level5">
+<h5 class="anchored" data-anchor-id="풍속과-기온이-대여에-영향을-받은-것으로-보여지기에-사람들이-자전거를-타기-좋은-날씨는-풍속과-기온이-내려갈-수록-자전거-대여가-많아지는-것을-알-수-있었고-따라서대여-어플에-조금-더-정확한-풍속과-기온을-보여주면-좋을-것-같습니다.">풍속과 기온이 대여에 영향을 받은 것으로 보여지기에 사람들이 자전거를 타기 좋은 날씨는 풍속과 기온이 내려갈 수록 자전거 대여가 많아지는 것을 알 수 있었고 따라서대여 어플에 조금 더 정확한 풍속과 기온을 보여주면 좋을 것 같습니다.</h5>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

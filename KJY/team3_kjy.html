@@ -216,7 +216,7 @@ X-squared = 23.389, df = 6, p-value = 0.000676</code></pre>
     Pearson's Chi-squared test
 
 data:  survivors_Embarked
-X-squared = 25.964, df = 2, p-value = 2.301e-06</code></pre>
+X-squared = 26.977, df = 2, p-value = 1.387e-06</code></pre>
 </div>
 </div>
 <section id="성별-pclass-연령-출발지-모두-생존과-관계가-있음" class="level5">
@@ -263,19 +263,19 @@ Cramer's V        : 0.162 </code></pre>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assocstats</span>(survivors_Embarked)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    X^2 df   P(&gt; X^2)
-Likelihood Ratio 25.364  2 3.1071e-06
-Pearson          25.964  2 2.3009e-06
+Likelihood Ratio 26.352  2 1.8954e-06
+Pearson          26.977  2 1.3868e-06
 
 Phi-Coefficient   : NA 
-Contingency Coeff.: 0.168 
-Cramer's V        : 0.171 </code></pre>
+Contingency Coeff.: 0.171 
+Cramer's V        : 0.174 </code></pre>
 </div>
 </div>
 <section id="카이제곱-통계량에-기초해-파이계수-분할계수-크래머v를-출력" class="level5">
 <h5 class="anchored" data-anchor-id="카이제곱-통계량에-기초해-파이계수-분할계수-크래머v를-출력">카이제곱 통계량에 기초해 파이계수, 분할계수, 크래머V를 출력</h5>
 </section>
-<section id="이중-크래머-v의-범위가-01로-연관성을-파악하는데-가장-용이할-것으로-판단" class="level5">
-<h5 class="anchored" data-anchor-id="이중-크래머-v의-범위가-01로-연관성을-파악하는데-가장-용이할-것으로-판단">이중 크래머 V의 범위가 0~1로 연관성을 파악하는데 가장 용이할 것으로 판단</h5>
+<section id="이중에-크래머-v의-범위가-01로-연관성을-파악하는데-가장-용이할-것으로-판단" class="level5">
+<h5 class="anchored" data-anchor-id="이중에-크래머-v의-범위가-01로-연관성을-파악하는데-가장-용이할-것으로-판단">이중에 크래머 V의 범위가 0~1로 연관성을 파악하는데 가장 용이할 것으로 판단</h5>
 </section>
 <section id="cramers-v-0.1-작음-cramers-v-0.3-중간-cramers-v-0.5-큼" class="level5">
 <h5 class="anchored" data-anchor-id="cramers-v-0.1-작음-cramers-v-0.3-중간-cramers-v-0.5-큼">Cramer’s V = 0.1: 작음 / Cramer’s V = 0.3: 중간 / Cramer’s V &gt;= 0.5: 큼</h5>

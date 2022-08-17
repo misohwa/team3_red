@@ -5,6 +5,221 @@ date: "2022-08-17"
 ---
 ```{r}
 library(tidyverse)
-train <- read.csv("", header=T)
+train <- read.csv("./house-prices/train.csv", header=T)
 head(train)
+```
+
+```{r}
+dim(train)
+```
+```{r}
+library(ggplot2)
+library(plotly)
+
+# x
+x <- seq(-4, 4, length.out = 101)
+# normal
+yn <- dnorm(x, mean = 0, sd = 1)
+# t
+yt003 <- dt(x, 3)
+yt030 <- dt(x, 30)
+
+hist(round(train$SalePrice / 1000, 1),
+     col = 'pink',
+     main = 'SalePrice 히스토그램',
+     xlab = '가격',
+     ylab = '빈도수'
+)
+par(new =TRUE)
+plot(x, yt003, type = 'l', col = 'blue', xlab ='', ylab = '',axes=FALSE)
+
+```
+
+1.정규분포에서 살짝 벗어난다.</br>
+2.데이터의 분포가 한쪽으로 쏠린 왜도 현상이 보인다.</br>
+
+```{r}
+
+options(scipen=999)
+
+# 상관계수 - 결측치 값 있음 
+head(train)
+
+# Bath 4개 한 컬럼으로 합쳐주기  
+Bath <- train$BsmtFullBath + train$BsmtHalfBath + train$FullBath + train$HalfBath
+train$Bath <- Bath
+
+# 수치형 컬럼만 가져오기 
+train_cor <- cor((train)[ ,sapply(train, class) == 'integer']) # 상관계수
+round(train_cor[,38],1) # SalePrices기준으로 상관계수
+```
+가장 상관계수가 높은 TOP3
+
+1. OverallQual - 집 전체 퀄리티 (0.8)
+2. GrLivArea   - 거실 면적      (0.7)
+3. FullBath    - 풀 배쓰        (0.6)
+4. TotalBsmtSF - 지하실 면적    (0.6)
+5. X1stFlrSF   - 1층 면적       (0.6)
+
+# 1. OverallQual(전체 품질)
+
+```{r}
+plot(train$OverallQual, train$SalePrice, main='집값과 전체 품질(OverallQual)',
+     xlab='전체 품질(등급)', ylab='집값', col='orange', pch=15,
+     xlim=c(1,10))
+```
+
+컬럼 OverallQual은 집의 전반적인 재료와 마감을 평가.</br>
+집의 전체 품질이 올라갈수록 집값이 올라가는 모습을 보임.</br>
+특이한게 최고 등급인 10등급에서 다양한 가격의 분포를 볼 수 있음.</br>
+
+# 2.GrLivArea(거실 면적) 
+
+```{r}
+# 이상치 처리 
+outlier <- boxplot.stats(train$GrLivArea)$out
+train.no.outlier <- train
+train.no.outlier[train.no.outlier$GrLivArea %in% outlier, ] <- NA
+
+plot(train.no.outlier$GrLivArea, train.no.outlier$SalePrice, 
+     main='집값과 거실 면적', xlab='거실 면적(평방 피트)', 
+     ylab='집값', col='blue', pch=15)
+```
+
+# 3. FullBath(욕실 수) 
+
+```{r}
+plot(factor(train$Bath), train$SalePrice, main='집값과 욕실 수',
+     xlab='욕실 수(0~3)', ylab='집값', col='green', pch=15)
+
+library(dplyr)
+MB <- train%>%
+    group_by(Bath)%>%
+    summarise(meanBath=mean(SalePrice))
+str(MB)
+MB$Bath<-as.factor(MB$Bath)
+barplot(MB$meanBath, names.arg = MB$Bath, main='집값과 욕실 수',
+        xlab='욕실 수(0~3)', ylab='집값', col='purple')
+```
+
+# 상관계수 TOP 5  
+## 전체 퀄리티, 거실 면적, 욕실 수, 지하실 면적, 1층 면적 
+
+```{r}
+par(mfrow=c(2, 3))
+
+model <- lm(SalePrice ~ OverallQual, data = train)
+plot(SalePrice ~ OverallQual, data = train, col='steelblue')
+abline(model, col = "tomato", lwd = 2)
+
+model <- lm(SalePrice ~ GrLivArea, data = train)
+plot(SalePrice ~ GrLivArea, data = train, col='steelblue')
+abline(model, col = "tomato", lwd = 2)
+
+model <- lm(SalePrice ~ Bath, data = train)
+plot(SalePrice ~ Bath, data = train, col='steelblue')
+abline(model, col = "tomato", lwd = 2)
+
+model <- lm(SalePrice ~ X1stFlrSF, data = train)
+plot(SalePrice ~ X1stFlrSF, data = train, col='steelblue')
+abline(model, col = "tomato", lwd = 2)
+
+model <- lm(SalePrice ~ TotalBsmtSF, data = train)
+plot(SalePrice ~ TotalBsmtSF, data = train, col='steelblue')
+abline(model, col = "tomato", lwd = 2)
+
+par(mfrow=c(1, 1))
+
+```
+
+<다중회귀분석>
+전체 퀄리티, 거실 면적, 욕실 수, 지하실 면적, 1층 면적(수치형 독립변수 5종)이 집 값(수치형 종속변수)에 미치는 영향.</br>
+
+**가설 설정**</br>
+- 귀무가설: 회귀식은 유의하지 않다.</br>
+- 대립가설: 회귀식은 유의하다.</br>
+
+1. 독립변수로 FullBath를 넣은 경우</br> 
+```{r}
+model_final<-lm(SalePrice ~ OverallQual + GrLivArea 
+                + FullBath + TotalBsmtSF + X1stFlrSF, data = train)
+summary(model_final)
+```
+
+2. 독립변수로 4개의 Bath를 합한 컬럼인 Bath를 넣은 경우</br>
+```{r}
+model_final_2<-lm(SalePrice ~ OverallQual + GrLivArea 
+                + Bath + TotalBsmtSF + X1stFlrSF, data = train)
+summary(model_final_2)
+```
+- 검정통계량(F) : 913.2
+- 유의확률(p-value) : 0.00000000000000022
+- 유의수준 : 0.05
+
+# 후진 선택법 
+
+후진선택법으로 찾은 조합 : 0.8083 / 0.8048 
+```{r}
+train_om <- na.omit((train)[ ,sapply(train, class) == 'integer'])
+train_om.lm <- lm(SalePrice ~ ., data=train_om)
+train_om.model <- step(train_om.lm, direction = "backward")
+summary(train_om.model)
+
+```
+# 전진 선택법
+
+전진 선택법으로 찾은 조합 : 0.809/ 0.8054 
+```{r}
+step(lm(SalePrice ~ 1, train_om), 
+     scope = list(lower ~ 1, upper = ~SalePrice ~ Id + MSSubClass + LotFrontage + LotArea + OverallQual + OverallCond + YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + BsmtFinSF2 + BsmtUnfSF + TotalBsmtSF + X1stFlrSF + X2ndFlrSF + LowQualFinSF + GrLivArea + BsmtFullBath + BsmtHalfBath + FullBath + HalfBath + BedroomAbvGr + KitchenAbvGr + TotRmsAbvGrd + Fireplaces + GarageYrBlt + GarageCars + GarageArea + WoodDeckSF + OpenPorchSF + EnclosedPorch + X3SsnPorch + ScreenPorch + PoolArea + MiscVal + MoSold + YrSold), direction = "forward")
+
+train_om.model.2 <- lm(formula = SalePrice ~ OverallQual + GrLivArea + BsmtFinSF1 + 
+GarageCars + MSSubClass + YearRemodAdd + MasVnrArea + LotArea + KitchenAbvGr + BedroomAbvGr + TotRmsAbvGrd + YearBuilt + OverallCond + BsmtFullBath + ScreenPorch + PoolArea + WoodDeckSF + Fireplaces + FullBath + LotFrontage + TotalBsmtSF, data = train_om)
+
+summary(train_om.model.2)
+```
+
+# 테스트 파일
+
+```{r}
+test <- read.csv('./house-prices/test.csv', header=T)
+head(test)
+```
+
+# (1) 상관관계 모델로 집 값 예측 
+# Score: 0.82212
+```{r}
+# test 전처리 
+Bath_t <- test$BsmtFullBath + test$BsmtHalfBath + test$FullBath + test$HalfBath
+test$Bath <- Bath_t
+
+cor_test <- test[,c('OverallQual','GrLivArea','Bath','TotalBsmtSF','X1stFlrSF')]
+
+test$Bath <- ifelse(is.na(test$Bath), mean(test$Bath, na.rm = T),test$Bath)
+
+test$TotalBsmtSF <- ifelse(is.na(test$TotalBsmtSF), mean(test$TotalBsmtSF, na.rm = T),test$TotalBsmtSF)
+
+# submission 파일에 값 넣기 
+pd <- predict(model_final_2, newdata=cor_test)
+sub <- read.csv("./house-prices/sample_submission.csv", header=T)
+sub$SalePrice <- pd
+
+write.csv(sub,file='./house-prices/sub_cor.csv')
+```
+
+# (2) 후진선택법 모델로 집 값 예측
+# Score: 0.56704 / 3887등
+
+```{r}
+# submission 파일에 값 넣기 
+pd_2 <- predict(train_om.model, newdata=test)
+pd_2
+sub_sel <- read.csv("./house-prices/sample_submission.csv", header=T)
+sub_sel
+sub_sel$SalePrice <- pd_2
+sub_sel$SalePrice
+
+pd_2<- ifelse(is.na(pd_2), mean(pd_2, na.rm = T),pd_2)
+
+write.csv(sub_sel,file='./house-prices/sub_sel.csv')
 ```
