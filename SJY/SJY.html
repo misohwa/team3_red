@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Marketing_Campaign</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="SJY_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SJY_files/libs/quarto-html/quarto.js"></script>
+<script src="SJY_files/libs/quarto-html/popper.min.js"></script>
+<script src="SJY_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SJY_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SJY_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SJY_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SJY_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SJY_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SJY_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Marketing_Campaign</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong>3조 심정윤</strong></p>
+<p>데이터 읽어오기 및 확인</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># getwd()</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./marketing_campaign.csv'</span>, <span class="at">sep=</span><span class="st">';'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># head(df)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># str(df)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> df[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">26</span>, <span class="sc">-</span><span class="dv">27</span>,<span class="sc">-</span><span class="dv">28</span>,<span class="sc">-</span><span class="dv">29</span>)]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2240 obs. of  24 variables:
+ $ Year_Birth         : int  1957 1954 1965 1984 1981 1967 1971 1985 1974 1950 ...
+ $ Education          : chr  "Graduation" "Graduation" "Graduation" "Graduation" ...
+ $ Marital_Status     : chr  "Single" "Single" "Together" "Together" ...
+ $ Income             : int  58138 46344 71613 26646 58293 62513 55635 33454 30351 5648 ...
+ $ Kidhome            : int  0 1 0 1 1 0 0 1 1 1 ...
+ $ Teenhome           : int  0 1 0 0 0 1 1 0 0 1 ...
+ $ Dt_Customer        : chr  "2012-09-04" "2014-03-08" "2013-08-21" "2014-02-10" ...
+ $ Recency            : int  58 38 26 26 94 16 34 32 19 68 ...
+ $ MntWines           : int  635 11 426 11 173 520 235 76 14 28 ...
+ $ MntFruits          : int  88 1 49 4 43 42 65 10 0 0 ...
+ $ MntMeatProducts    : int  546 6 127 20 118 98 164 56 24 6 ...
+ $ MntFishProducts    : int  172 2 111 10 46 0 50 3 3 1 ...
+ $ MntSweetProducts   : int  88 1 21 3 27 42 49 1 3 1 ...
+ $ MntGoldProds       : int  88 6 42 5 15 14 27 23 2 13 ...
+ $ NumDealsPurchases  : int  3 2 1 2 5 2 4 2 1 1 ...
+ $ NumWebPurchases    : int  8 1 8 2 5 6 7 4 3 1 ...
+ $ NumCatalogPurchases: int  10 1 2 0 3 4 3 0 0 0 ...
+ $ NumStorePurchases  : int  4 2 10 4 6 10 7 4 2 0 ...
+ $ NumWebVisitsMonth  : int  7 5 4 6 5 6 6 8 9 20 ...
+ $ AcceptedCmp3       : int  0 0 0 0 0 0 0 0 0 1 ...
+ $ AcceptedCmp4       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ AcceptedCmp5       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ AcceptedCmp1       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ AcceptedCmp2       : int  0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+</div>
+</div>
+<p><strong>AcceptedCmp1</strong> - 1 if customer accepted the offer in the 1st campaign, 0 otherwise<br>
+<strong>AcceptedCmp2</strong> - 1 if customer accepted the offer in the 2nd campaign, 0 otherwise<br>
+<strong>AcceptedCmp3</strong> - 1 if customer accepted the offer in the 3rd campaign, 0 otherwise<br>
+<strong>AcceptedCmp4</strong> - 1 if customer accepted the offer in the 4th campaign, 0 otherwise<br>
+<strong>AcceptedCmp5</strong> - 1 if customer accepted the offer in the 5th campaign, 0 otherwise</p>
+<p>Response (target) - 1 if customer accepted the offer in the last campaign, 0 otherwise<br>
+Complain - 1 if customer complained in the last 2 years<br>
+DtCustomer - date of customer’s enrolment with the company<br>
+<strong>Education</strong> - customer’s level of education<br>
+<strong>Marital</strong> - customer’s marital status<br>
+<strong>Kidhome</strong> - number of small children in customer’s household<br>
+<strong>Teenhome</strong> - number of teenagers in customer’s household<br>
+<strong>Income</strong> - customer’s yearly household income</p>
+<p><strong>MntFishProducts</strong> - amount spent on fish products in the last 2 years<br>
+<strong>MntMeatProducts</strong> - amount spent on meat products in the last 2 years<br>
+<strong>MntFruits</strong> - amount spent on fruits products in the last 2 years<br>
+<strong>MntSweetProducts</strong> - amount spent on sweet products in the last 2 years<br>
+<strong>MntWines</strong> - amount spent on wine products in the last 2 years<br>
+<strong>MntGoldProds</strong> - amount spent on gold products in the last 2 years</p>
+<p>NumDealsPurchases - number of purchases made with discount<br>
+NumCatalogPurchases - number of purchases made using catalogue<br>
+NumStorePurchases - number of purchases made directly in stores<br>
+NumWebPurchases - number of purchases made through company’s web site<br>
+NumWebVisitsMonth - number of visits to company’s web site in the last month</p>
+<p>Recency - number of days since the last purchase</p>
+<section id="캠페인-현황-확인" class="level2">
+<h2 class="anchored" data-anchor-id="캠페인-현황-확인">캠페인 현황 확인</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(customer<span class="sc">$</span>AcceptedCmp1), <span class="at">init.angle=</span><span class="dv">90</span>, <span class="at">main=</span><span class="st">'캠페인 1'</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'X'</span>,<span class="st">'O'</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(customer<span class="sc">$</span>AcceptedCmp2), <span class="at">init.angle=</span><span class="dv">90</span>, <span class="at">main=</span><span class="st">'캠페인 2'</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'X'</span>,<span class="st">'O'</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(customer<span class="sc">$</span>AcceptedCmp3), <span class="at">init.angle=</span><span class="dv">90</span>, <span class="at">main=</span><span class="st">'캠페인 3'</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'X'</span>,<span class="st">'O'</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(customer<span class="sc">$</span>AcceptedCmp4), <span class="at">init.angle=</span><span class="dv">90</span>, <span class="at">main=</span><span class="st">'캠페인 4'</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'X'</span>,<span class="st">'O'</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(customer<span class="sc">$</span>AcceptedCmp5), <span class="at">init.angle=</span><span class="dv">90</span>, <span class="at">main=</span><span class="st">'캠페인 5'</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'X'</span>,<span class="st">'O'</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="주-등록-고객층-확인" class="level2">
+<h2 class="anchored" data-anchor-id="주-등록-고객층-확인">주 등록 고객층 확인</h2>
+<section id="나이" class="level4">
+<h4 class="anchored" data-anchor-id="나이">나이</h4>
+<p>Yearbirth 데이터 확인 및 이상치 결측치 처리</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>birth.box <span class="ot">&lt;-</span> <span class="fu">boxplot</span>(customer<span class="sc">$</span>Year_Birth, <span class="at">pch=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>outlier <span class="ot">&lt;-</span> birth.box<span class="sc">$</span>out  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>outlier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1900 1893 1899</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Year_Birth <span class="ot">&lt;-</span> customer<span class="sc">$</span>Year_Birth[<span class="fu">ifelse</span>(customer<span class="sc">$</span>Year_Birth <span class="sc">%in%</span> outlier,<span class="cn">NA</span>,customer<span class="sc">$</span>Year_Birth)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>customer$Age 추가</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="dv">2022</span> <span class="sc">-</span> customer<span class="sc">$</span>Year_Birth</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Age_G <span class="ot">&lt;-</span> <span class="fu">cut</span>(customer<span class="sc">$</span>Age, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">80</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'30대'</span>,<span class="st">'40대'</span>,<span class="st">'50대'</span>,<span class="st">'60대'</span>,<span class="st">'70대+@'</span>)) </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># table(customer$Age_G)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(customer<span class="sc">$</span>Age_G), <span class="at">main =</span> <span class="st">'나이대'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="가족-구성원-수" class="level3">
+<h3 class="anchored" data-anchor-id="가족-구성원-수">가족 구성원 수</h3>
+<p>customer$HouseholdSize (가족 구성원 수 컬럼 추가)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>parent[customer<span class="sc">$</span>Marital_Status <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Alone'</span>, <span class="st">'Divorced'</span>, <span class="st">'Widow'</span>, <span class="st">'Single'</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>parent[customer<span class="sc">$</span>Marital_Status <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Married'</span>, <span class="st">'Together'</span>)] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>parent[customer<span class="sc">$</span>Marital_Status <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Absurd'</span>, <span class="st">'YOLO'</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>)]  <span class="co"># Marital_Status 컬럼 삭제</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>child <span class="ot">&lt;-</span> customer<span class="sc">$</span>Kidhome<span class="sc">+</span>customer<span class="sc">$</span>Teenhome</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer [, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="sc">-</span><span class="dv">5</span>)]  <span class="co"># Kidhome, Teenhome 컬럼 삭제</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>HouseholdSize <span class="ot">&lt;-</span> customer<span class="sc">$</span>parent<span class="sc">+</span>customer<span class="sc">$</span>child</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer [, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">22</span>,<span class="sc">-</span><span class="dv">23</span>)]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># sort(unique(customer$HouseholdSize))</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>HouseholdSize <span class="ot">&lt;-</span> <span class="fu">factor</span>(customer<span class="sc">$</span>HouseholdSize)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># str(customer$HouseholdSize)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># table(customer$HouseholdSize)</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(customer<span class="sc">$</span>HouseholdSize),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'가족 구성원 수'</span>, </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">'인원 수'</span>, <span class="at">ylab =</span> <span class="st">'고객 수'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="소득" class="level3">
+<h3 class="anchored" data-anchor-id="소득">소득</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>income.box <span class="ot">&lt;-</span> <span class="fu">boxplot</span>(customer<span class="sc">$</span>Income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># income.box </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>income.box<span class="sc">$</span>out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 157243 162397 153924 160803 157733 157146 156924 666666</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Income[customer<span class="sc">$</span>Income <span class="sc">==</span> <span class="dv">666666</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sort(unique(customer$Income), decreasing = T)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(customer$Income)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Income_G <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">cut</span>(customer<span class="sc">$</span>Income,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">200000</span>, <span class="dv">5000</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">seq</span>(<span class="dv">5000</span>,<span class="dv">200000</span>, <span class="dv">5000</span>)))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(is.na(customer$Income))</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(is.na(customer$Income_G))</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># str(customer$Income_G)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># table(customer$Income_G)</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(customer<span class="sc">$</span>Income_G),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'소득구간별 고객 수'</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'소득금액'</span>,<span class="at">ylab =</span> <span class="st">'고객 수'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="주요고객층-분석" class="level2">
+<h2 class="anchored" data-anchor-id="주요고객층-분석">주요고객층 분석</h2>
+<p>customer$TotalPurchase (총 구매금액)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>TotalPurchase <span class="ot">&lt;-</span> customer<span class="sc">$</span>MntWines <span class="sc">+</span> customer<span class="sc">$</span>MntFruits <span class="sc">+</span> customer<span class="sc">$</span>MntMeatProducts <span class="sc">+</span> customer<span class="sc">$</span>MntFishProducts <span class="sc">+</span> customer<span class="sc">$</span>MntSweetProducts <span class="sc">+</span> customer<span class="sc">$</span>MntGoldProds</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(customer)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer[, <span class="fu">c</span>(<span class="sc">-</span>(<span class="dv">9</span><span class="sc">:</span><span class="dv">14</span>))]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># sort(unique(customer$TotalPurchase))</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>TotalPurchase_G <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">cut</span>(customer<span class="sc">$</span>TotalPurchase, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="dv">100</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">100</span>,<span class="dv">2000</span>,<span class="dv">100</span>))))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#str(customer$TotalPurchase_G)</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># table(customer$TotalPurchase_G)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(customer<span class="sc">$</span>TotalPurchase_G),</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'최근 2년 총 구매금액'</span>,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">'구매 금액대'</span>, <span class="at">ylab =</span> <span class="st">'고객 수'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>결측치 확인 및 삭제</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VIM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: colorspace</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: grid</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>VIM is ready to use.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Suggestions and bug-reports can be submitted at: https://github.com/statistikat/VIM/issues</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'VIM'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:datasets':
+
+    sleep</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggr</span>(customer,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">numbers =</span> T, <span class="at">prop =</span> F, <span class="at">sortVars =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Variables sorted by number of missings: 
+          Variable Count
+   TotalPurchase_G    50
+            Income    25
+          Income_G    25
+            parent     4
+     HouseholdSize     4
+        Year_Birth     3
+         Education     0
+       Dt_Customer     0
+           Recency     0
+          MntWines     0
+         MntFruits     0
+   MntMeatProducts     0
+ NumStorePurchases     0
+ NumWebVisitsMonth     0
+      AcceptedCmp3     0
+      AcceptedCmp4     0
+      AcceptedCmp5     0
+      AcceptedCmp1     0
+      AcceptedCmp2     0
+             child     0
+     TotalPurchase     0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(is.na(customer$Income))</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer[<span class="fu">complete.cases</span>(customer),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>회귀분석을 위해 숫자형으로 변경</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(customer<span class="sc">$</span>Education)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:2158] "Graduation" "Graduation" "Graduation" "Graduation" "PhD" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unique(customer$Education)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Education_N <span class="ot">&lt;-</span> <span class="fu">factor</span>(customer<span class="sc">$</span>Education, <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(customer<span class="sc">$</span>Education_N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Factor w/ 4 levels "0","1","2","3": 2 2 2 2 4 3 2 4 4 4 ...</code></pre>
+</div>
+</div>
+<p><strong>customer.N</strong> : only numeric columns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># str(customer)</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="dv">2022</span> <span class="sc">-</span> customer<span class="sc">$</span>Year_Birth</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(customer)</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>customer.N <span class="ot">&lt;-</span> customer[, <span class="fu">c</span>(<span class="st">'Age'</span>,<span class="st">'Income'</span>,<span class="st">'Education_N'</span>,<span class="st">'HouseholdSize'</span>,<span class="st">"TotalPurchase"</span>)]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(customer.N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2158 obs. of  5 variables:
+ $ Age          : num  46 46 56 60 38 50 56 47 47 68 ...
+ $ Income       : int  58138 46344 71613 26646 58293 62513 55635 33454 30351 5648 ...
+ $ Education_N  : Factor w/ 4 levels "0","1","2","3": 2 2 2 2 4 3 2 4 4 4 ...
+ $ HouseholdSize: Factor w/ 5 levels "1","2","3","4",..: 1 3 2 3 3 3 2 3 3 4 ...
+ $ TotalPurchase: int  1617 27 776 53 422 716 590 169 46 49 ...</code></pre>
+</div>
+</div>
+<section id="tpage" class="level3">
+<h3 class="anchored" data-anchor-id="tpage">TP~AGE</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model.Age <span class="ot">&lt;-</span> <span class="fu">lm</span>(TotalPurchase <span class="sc">~</span> Age, <span class="at">data=</span>customer.N)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TotalPurchase ~ Age, data = customer.N)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-578.2 -501.2 -198.5  427.6 1417.3 
+
+Coefficients:
+            Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) 533.8922    56.5086   9.448 &lt;0.0000000000000002 ***
+Age           0.6748     1.0143   0.665               0.506    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 559.6 on 2156 degrees of freedom
+Multiple R-squared:  0.0002053, Adjusted R-squared:  -0.0002584 
+F-statistic: 0.4427 on 1 and 2156 DF,  p-value: 0.5059</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(customer.N<span class="sc">$</span>Age, customer.N<span class="sc">$</span>TotalPurchase,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'나이'</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model.Age,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="st">'red'</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="tpincome" class="level3">
+<h3 class="anchored" data-anchor-id="tpincome">TP~Income</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>model.I <span class="ot">&lt;-</span> <span class="fu">lm</span>(TotalPurchase <span class="sc">~</span> Income, <span class="at">data=</span>customer.N)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.I)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TotalPurchase ~ Income, data = customer.N)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2778.28  -213.44   -33.03   193.21  2174.90 
+
+Coefficients:
+                Estimate   Std. Error t value            Pr(&gt;|t|)    
+(Intercept) -495.8421112   19.3366873  -25.64 &lt;0.0000000000000002 ***
+Income         0.0208201    0.0003488   59.69 &lt;0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 343.6 on 2156 degrees of freedom
+Multiple R-squared:  0.623, Adjusted R-squared:  0.6229 
+F-statistic:  3563 on 1 and 2156 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(customer.N<span class="sc">$</span>Income, customer.N<span class="sc">$</span>TotalPurchase,</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'소득'</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model.I,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="st">'red'</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="tpedu" class="level2">
+<h2 class="anchored" data-anchor-id="tpedu">TP~EDU</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(customer.N<span class="sc">$</span>Education_N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Factor w/ 4 levels "0","1","2","3": 2 2 2 2 4 3 2 4 4 4 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>customer.N<span class="sc">$</span>Education_N <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(customer.N<span class="sc">$</span>Education_N)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>model.E <span class="ot">&lt;-</span> <span class="fu">lm</span>(TotalPurchase <span class="sc">~</span> Education_N, <span class="at">data=</span>customer.N)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.E)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TotalPurchase ~ Education_N, data = customer.N)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-637.8 -479.4 -221.3  430.2 1444.0 
+
+Coefficients:
+            Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)   448.14      33.38  13.423 &lt; 0.0000000000000002 ***
+Education_N    49.43      12.57   3.932            0.0000869 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 557.7 on 2156 degrees of freedom
+Multiple R-squared:  0.00712,   Adjusted R-squared:  0.00666 
+F-statistic: 15.46 on 1 and 2156 DF,  p-value: 0.00008687</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>customer.N<span class="sc">$</span>Education_N, <span class="at">y=</span>customer.N<span class="sc">$</span>TotalPurchase, <span class="at">type=</span><span class="st">'p'</span>,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'최종학력'</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">'royalblue'</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model.E, <span class="at">col=</span><span class="st">'tomato'</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="tphs" class="level2">
+<h2 class="anchored" data-anchor-id="tphs">TP~HS</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># customer.N$HouseholdSize &lt;- as.integer(customer.N$HouseholdSize)</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>model.HS <span class="ot">&lt;-</span> <span class="fu">lm</span>(TotalPurchase <span class="sc">~</span> HouseholdSize, <span class="at">data=</span>customer.N)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model.HS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TotalPurchase ~ HouseholdSize, data = customer.N)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1020.0  -380.7  -133.9   360.9  1519.3 
+
+Coefficients:
+               Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)     1025.96      33.48  30.641 &lt; 0.0000000000000002 ***
+HouseholdSize2  -295.88      38.48  -7.689   0.0000000000000224 ***
+HouseholdSize3  -588.28      37.66 -15.622 &lt; 0.0000000000000002 ***
+HouseholdSize4  -779.80      44.72 -17.438 &lt; 0.0000000000000002 ***
+HouseholdSize5  -726.93      97.53  -7.454   0.0000000000001307 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 510 on 2153 degrees of freedom
+Multiple R-squared:  0.1709,    Adjusted R-squared:  0.1693 
+F-statistic: 110.9 on 4 and 2153 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span><span class="fu">as.integer</span>(customer.N<span class="sc">$</span>HouseholdSize),<span class="at">y=</span>customer.N<span class="sc">$</span>TotalPurchase,</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">'p'</span>,</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'가구 구성원 수'</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model.HS,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="st">'red'</span>,</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in abline(model.HS, col = "red", lty = 1, lwd = 2): only using the first
+two of 5 regression coefficients</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="SJY_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>정리 :<br>
+나이 -&gt; 귀무가설 채택<br>
+<strong>소득</strong> -&gt; 귀무가설 <strong>기각</strong> + <strong>R2 0.6281</strong><br>
+최종학력 -&gt; 귀무가설 <strong>기각</strong> + R2 0.00786<br>
+가구구성원수 -&gt; 귀무가설 <strong>기</strong>각 + R2 0.187</p>
+<section id="분산분석" class="level3">
+<h3 class="anchored" data-anchor-id="분산분석">분산분석</h3>
+<p>학력</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 등분산성 여부</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(TotalPurchase<span class="sc">~</span>Education_N, <span class="at">data=</span>customer.N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  TotalPurchase by Education_N
+Bartlett's K-squared = 12.969, df = 3, p-value = 0.004704</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(TotalPurchase<span class="sc">~</span>Education_N, <span class="at">data=</span>customer.N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  TotalPurchase and Education_N
+F = 14.78, num df = 3.00, denom df = 767.95, p-value = 0.000000002304</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>edu.aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(TotalPurchase<span class="sc">~</span><span class="fu">factor</span>(Education_N), <span class="at">data=</span>customer.N)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># model.tables(edu.aov, type='mean')</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(edu.aov, <span class="at">type=</span><span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ factor(Education_N) 
+         1       2      3      4
+    -181.3   22.24 -30.19  67.27
+rep  249.0 1094.00 349.00 466.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>edu.compare <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(edu.aov)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>edu.compare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = TotalPurchase ~ factor(Education_N), data = customer.N)
+
+$`factor(Education_N)`
+         diff         lwr       upr     p adj
+2-1 203.51349  103.264086 303.76290 0.0000012
+3-1 151.08327   32.645466 269.52107 0.0058158
+4-1 248.54545  136.469479 360.62143 0.0000001
+3-2 -52.43022 -140.203826  35.34338 0.4161913
+4-2  45.03196  -33.947253 124.01118 0.4584080
+4-3  97.46219   -3.608512 198.53288 0.0634569</code></pre>
+</div>
+</div>
+<p>가족구성원수</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 등분산성 여부</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(TotalPurchase<span class="sc">~</span>HouseholdSize, <span class="at">data=</span>customer.N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  TotalPurchase by HouseholdSize
+Bartlett's K-squared = 185.08, df = 4, p-value &lt; 0.00000000000000022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>hs.ow <span class="ot">&lt;-</span><span class="fu">oneway.test</span>(TotalPurchase<span class="sc">~</span>HouseholdSize, <span class="at">data=</span>customer.N)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>hs.ow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  TotalPurchase and HouseholdSize
+F = 128.53, num df = 4.00, denom df = 205.25, p-value &lt;
+0.00000000000000022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>hs.aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(TotalPurchase <span class="sc">~</span> HouseholdSize, <span class="at">data=</span>customer.N)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># model.tables(hs.aov, type='mean')</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="fu">model.tables</span>(hs.aov, <span class="at">type=</span><span class="st">'effects'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables of effects
+
+ HouseholdSize 
+        1     2      3      4      5
+    455.3 159.5 -132.9 -324.5 -271.6
+rep 232.0 723.0  876.0  296.0   31.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>hs.compare <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(hs.aov)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>hs.compare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = TotalPurchase ~ HouseholdSize, data = customer.N)
+
+$HouseholdSize
+         diff       lwr        upr     p adj
+2-1 -295.8838 -400.9426 -190.82491 0.0000000
+3-1 -588.2820 -691.0879 -485.47611 0.0000000
+4-1 -779.7990 -901.8865 -657.71155 0.0000000
+5-1 -726.9289 -993.1835 -460.67435 0.0000000
+3-2 -292.3982 -362.3578 -222.43866 0.0000000
+4-2 -483.9153 -579.9916 -387.83901 0.0000000
+5-2 -431.0452 -686.4210 -175.66938 0.0000423
+4-3 -191.5171 -285.1244  -97.90971 0.0000003
+5-3 -138.6470 -393.1042  115.81028 0.5707061
+5-4   52.8701 -209.9698  315.70997 0.9820601</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
