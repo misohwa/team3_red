@@ -40,6 +40,13 @@ for (i in 1:length(alldf)){
 }
 ```
 
+## 상관분석
+
+```{r}
+library(psych)
+pairs.panels(alldf)
+```
+
 ## 일원분산분석
 
 ##### 계절이나 날씨 (독립변수, 범주형 변수)가 count 자전거 대여량(종속변수, 수치형 변수)에 미치는 영향 (집단 간 차이)를 알고 싶어서 일원분산분석을 실시. 그러나 분산 분석을 사용하기 위해서는 정규성과 등분산성이 가정이 되야함. 그러나 자전거 데이터는 정규성 표본 크기가 커서 정규성 가정에 크게 제한을 받지 않아서 생략.
@@ -91,13 +98,6 @@ boxplot(count~weather ,data = alldf, col = 'tomato',
 boxplot(count~holiday ,data = alldf, col = 'tomato',
         main ='count & holiday')
 par(mfrow = c(1,1))
-```
-
-## 상관분석
-
-```{r}
-library(psych)
-pairs.panels(alldf)
 ```
 
 ### 다중회귀분석
