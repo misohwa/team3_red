@@ -19,7 +19,7 @@ train$Age[is.na(train$Age)] = mean(train$Age, na.rm = TRUE)
 
 ## Embarked 컬럼의 빈값을 샘플링해서 채우기
 ```{r}
-train$Embarked == ''
+#train$Embarked == ''
 train$Embarked[train$Embarked == ''] <- sample(na.omit(train$Embarked), 2)
 ```
 
@@ -60,7 +60,7 @@ assocstats(survivors_Pclass)
 assocstats(survivors_Ages)
 assocstats(survivors_Embarked)
 ```
-##### 생존여부와 성별간의 피어슨 계수가 가장 큼 -> 두 변수간의 관련 강도가 가장 큼
+##### 생존여부와 성별간의 피어슨 계수가 가장 큼 -> 두 변수간의 관련 강도가 가장 높음
 
 
 ## 두 변수간 관계 모자이크 플롯
@@ -68,7 +68,7 @@ assocstats(survivors_Embarked)
 mosaicplot(~Survived+Sex, data=train, shade=TRUE, main='survived-gender')
 ```
 ##### 사망자에서는 남성이 많고 생존자는 여성이 많음
-##### 두 범주형 변수간 현저한 차이를 보이고 있음을 알 수 있음 
+##### 두 범주형 변수간 큰 차이를 보이고 있음을 알 수 있음 
 
 ```{r}
 mosaicplot(~Survived+Pclass, data=train, shade=TRUE, main='survived-Pclass')
@@ -99,11 +99,12 @@ summary(titanic_logit)
 ##### parch -> 약하지만 관계가 있음
 ##### fare -> 관계가 없음
 
-## predict
+## 생존여부 예측
 ```{r}
 titanic_logit_pred <- predict(titanic_logit, data=train_2, type='response')
 titanic_logit_pred <- factor(titanic_logit_pred>0.5, levels=c(TRUE, FALSE), labels=c(1, 0))
-head(table(titanic_logit_pred))
+
+table(titanic_logit_pred)
 ```
 ##### 생존자->320명, 사망자->571명으로 예측됨
 
