@@ -1,0 +1,80 @@
+---
+title: "Marketing_Campaign"
+editor: visual
+---
+
+
+데이터 읽어오기 및 확인
+```{r}
+# getwd()
+
+df <- read.csv('./marketing_campaign.csv', sep=';')
+# head(df)
+# str(df)
+customer <- df[,c(-1,-26, -27,-28,-29)]
+str(customer)
+```
+
+캠페인 현황 확인
+```{r}
+par(mfrow=c(2,3))
+pie(table(customer$AcceptedCmp1), init.angle=90, main='캠페인 1', labels = c('X','O'))
+pie(table(customer$AcceptedCmp2), init.angle=90, main='캠페인 2', labels = c('X','O'))
+pie(table(customer$AcceptedCmp3), init.angle=90, main='캠페인 3', labels = c('X','O'))
+pie(table(customer$AcceptedCmp4), init.angle=90, main='캠페인 4', labels = c('X','O'))
+pie(table(customer$AcceptedCmp5), init.angle=90, main='캠페인 5', labels = c('X','O'))
+par(mfrow=c(1,1))
+```
+
+
+
+Yearbirth 데이터 확인 및 이상치 결측치 처리
+```{r}
+birth.box <- boxplot(customer$Year_Birth, pch=20)
+outlier <- birth.box$out  
+outlier
+customer$Year_Birth <- customer$Year_Birth[ifelse(customer$Year_Birth %in% outlier,
+                                                  NA,customer$Year_Birth)] 
+```
+
+
+customer$AgeGroup 추가
+```{r}
+customer$Age <- 2022 - customer$Year_Birth
+customer$Age_G <- cut(customer$Age, breaks = c(30,40,50,60,70,80),
+                         labels = c('30대','40대','50대','60대','70대+@')) 
+
+table(customer$Age_G)
+barplot(table(customer$Age_G))
+```
+
+customer$HouseholdSize (가족 구성원 수 컬럼 추가)
+```{r}
+customer$parent[customer$Marital_Status %in% c('Alone', 'Divorced', 'Widow', 'Single')] <- 1
+customer$parent[customer$Marital_Status %in% c('Married', 'Together')] <- 2
+customer$parent[customer$Marital_Status %in% c('Absurd', 'YOLO')] <- NA
+customer <- customer[,c(-3)]  # Marital_Status 컬럼 삭제
+
+customer$child <- customer$Kidhome+customer$Teenhome
+customer <- customer [, c(-4,-5)]  # Kidhome, Teenhome 컬럼 삭제
+
+customer$HouseholdSize <- customer$parent+customer$child
+customer <- customer [, c(-22,-23)]
+
+sort(unique(customer$HouseholdSize))
+
+customer$HouseholdSize <- factor(customer$HouseholdSize)
+
+str(customer$HouseholdSize)
+
+table(customer$HouseholdSize)
+
+barplot(table(customer$HouseholdSize),
+        main = '가족 구성원 수', 
+        xlab = '인원 수', ylab = '고객 수')
+```
+
+
+
+
+---
