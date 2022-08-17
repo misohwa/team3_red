@@ -1,0 +1,373 @@
+---
+title: "week8_team3"
+author: "Aravis"
+date: "2022-08-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+데이터 읽어오기 및 확인
+```{r}
+getwd()
+
+df <- read.csv('./marketing_campaign.csv', sep=';')
+
+head(df)
+str(df)
+```
+캠페인 현황 확인
+```{r}
+customer
+par(mfrow=c(2,3))
+pie(table(customer$AcceptedCmp1), init.angle=90, main='캠페인 1', labels = c('X','O'))
+pie(table(customer$AcceptedCmp2), init.angle=90, main='캠페인 2', labels = c('X','O'))
+pie(table(customer$AcceptedCmp3), init.angle=90, main='캠페인 3', labels = c('X','O'))
+pie(table(customer$AcceptedCmp4), init.angle=90, main='캠페인 4', labels = c('X','O'))
+pie(table(customer$AcceptedCmp5), init.angle=90, main='캠페인 5', labels = c('X','O'))
+par(mfrow=c(1,1))
+```
+
+필요한 컬럼만
+```{r}
+customer <- df[,c(-1,-26, -27,-28,-29)]
+head(customer)
+str(customer)
+```
+
+
+
+customer$HouseholdSize (가족 구성원 수 컬럼 추가)
+```{r}
+customer$parent[customer$Marital_Status %in% c('Alone', 'Divorced', 'Widow', 'Single')] <- 1
+customer$parent[customer$Marital_Status %in% c('Married', 'Together')] <- 2
+customer$parent[customer$Marital_Status %in% c('Absurd', 'YOLO')] <- NA
+customer <- customer[,c(-3)]  # Marital_Status 컬럼 삭제
+
+customer$child <- customer$Kidhome+customer$Teenhome
+customer <- customer [, c(-4,-5)]  # Kidhome, Teenhome 컬럼 삭제
+
+customer$HouseholdSize <- customer$parent+customer$child
+customer <- customer [, c(-22,-23)]
+
+sort(unique(customer$HouseholdSize))
+
+customer$HouseholdSize <- factor(customer$HouseholdSize)
+
+str(customer$HouseholdSize)
+
+table(customer$HouseholdSize)
+
+barplot(table(customer$HouseholdSize),
+        main = '가족 구성원 수', 
+        xlab = '인원 수', ylab = '고객 수')
+```
+
+Yearbirth 데이터 확인 및 이상치 결측치 처리
+```{r}
+birth.box <- boxplot(customer$Year_Birth, pch=20)
+outlier <- birth.box$out  
+outlier
+customer$Year_Birth <- customer$Year_Birth[ifelse(customer$Year_Birth %in% outlier,
+                                                  NA,customer$Year_Birth)] 
+```
+
+customer$AgeGroup 추가
+```{r}
+customer$Age <- 2022 - customer$Year_Birth
+customer$Age_G <- cut(customer$Age, breaks = c(30,40,50,60,70,80),
+                         labels = c('30대','40대','50대','60대','70대+@')) 
+
+table(customer$Age_G)
+barplot(table(customer$Age_G))
+```
+
+소득
+```{r}
+income.box <- boxplot(customer$Income)
+income.box 
+
+income.box$out
+
+customer$Income[customer$Income == 666666] <- NA
+boxplot(customer$Income)
+```
+```{r}
+# sort(unique(customer$Income), decreasing = T)
+plot(customer$Income)
+
+
+customer$Income_G <- factor(cut(customer$Income,
+                         breaks = seq(0,200000, 5000),
+                         labels = seq(5000,200000, 5000)))
+sum(is.na(customer$Income))
+sum(is.na(customer$Income_G))
+
+
+str(customer$Income_G)
+
+table(customer$Income_G)
+
+barplot(table(customer$Income_G),
+     main='소득구간별 고객 수',
+     xlab='소득금액',ylab = '고객 수')
+```
+
+최종학력&소득 - 카이스퀘어 검정 (독립성 검정)
+```{r}
+# EI <- table(customer$Education, customer$Income_G)
+# EI
+# 
+# EI.prop <- prop.table(EI)
+# EI.prop
+# 
+# EI.margin <- addmargins(prop.table(addmargins(EI, 2), 2), 1)
+# prop.table(addmargins(EI, 2), 2)
+# 
+# #############################
+# chisq.test(EI)
+# chisq.test(EI.prop)
+# chisq.test(EI.margin)
+
+```
+
+
+
+--------------------------------------------------------------------------------------------
+customer$TotalPurchase (총 구매금액)
+```{r}
+customer$TotalPurchase <- customer$MntWines + customer$MntFruits + customer$MntMeatProducts + customer$MntFishProducts + customer$MntSweetProducts + customer$MntGoldProds
+
+#colnames(customer)
+customer <- customer[, c(-(9:14))]
+
+sort(unique(customer$TotalPurchase))
+
+customer$TotalPurchase_G <- factor(cut(customer$TotalPurchase, breaks = seq(0,2000,100),
+                                     labels = c(seq(100,2000,100))))
+
+str(customer$TotalPurchase_G)
+table(customer$TotalPurchase_G)
+
+barplot(table(customer$TotalPurchase_G),
+        main = '최근 2년 총 구매금액',
+        xlab = '구매 금액대', ylab = '고객 수')
+```
+
+
+
+# 순서?
+결측치 확인 및 삭제 
+```{r}
+library(VIM)
+
+################################################
+aggr(customer,
+     numbers = T, prop = F, sortVars = T)
+sum(is.na(customer$Income))
+#customer <- customer[complete.cases(customer),]
+```
+회귀분석을 위해 숫자형으로 변경
+```{r}
+str(customer$Education)
+unique(customer$Education)
+customer$Education_N <- factor(customer$Education, labels = c(0,0,1,2,3))
+str(customer$Education_N)
+```
+
+
+# customer.N : only numeric columns
+```{r}
+str(customer)
+colnames(customer)
+
+customer.N <- customer[, c('Age','Income', 'Education_N','HouseholdSize',"TotalPurchase")]
+str(customer.N)
+```
+
+## TP~AGE
+
+Coefficients:
+            Estimate Std. Error t value            Pr(>|t|)    
+(Intercept) 569.1334    59.4625   9.571 <0.0000000000000002 ***
+Age           0.6727     1.0672   0.630               0.529 
+
+Multiple R-squared:  0.0001777,	Adjusted R-squared:  -0.0002696 
+
+```{r}
+model.Age <- lm(TotalPurchase ~ Age, data=customer.N)
+
+model.Age
+summary(model.Age)
+
+plot(customer.N$Age, customer.N$TotalPurchase,
+     col='royalblue',
+     main='나이')
+abline(model.Age,
+       col='red',
+       lty=1, lwd=2)
+
+```
+
+## TP~Income
+
+Coefficients:
+               Estimate  Std. Error t value            Pr(>|t|)    
+(Intercept) -546.468861   20.418483  -26.76 <0.0000000000000002 ***
+Income         0.022201    0.000363   61.16 <0.0000000000000002 ***
+
+Multiple R-squared:  0.6283,	Adjusted R-squared:  0.6281
+
+```{r}
+model.I <- lm(TotalPurchase ~ Income, data=customer.N)
+
+model.I
+summary(model.I)
+
+plot(customer.N$Income, customer.N$TotalPurchase,
+     col='royalblue',
+     main='소득')
+
+abline(model.I,
+       col='red',
+       lty=1, lwd=2)
+```
+
+
+## TP~EDU
+
+Coefficients:
+            Estimate Std. Error t value             Pr(>|t|)    
+(Intercept)   463.16      35.31  13.119 < 0.0000000000000002 ***
+Education_N    57.41      13.26   4.329            0.0000157 ***
+
+Multiple R-squared:  0.008303,	Adjusted R-squared:  0.00786 
+
+```{r}
+
+str(customer.N$Education_N)
+customer.N$Education_N <- as.integer(customer.N$Education_N)
+
+
+model.E <- lm(TotalPurchase ~ Education_N, data=customer.N)
+
+model.E
+summary(model.E)
+
+plot(x=customer.N$Education_N, y=customer.N$TotalPurchase, type='p',
+     main='최종학력',
+     col='royalblue')
+abline(model.E, col='tomato', lwd=2)
+
+# library(ggplot2)
+# ggplot(customer.N, aes(x=Education_N, y=TotalPurchase))+
+#   geom_point(col='tomato', pch=19)+
+#   geom_smooth(method=lm, col='steelblue', se=F)
+```
+
+## TP~HS
+
+Coefficients:
+               Estimate Std. Error t value             Pr(>|t|)    
+(Intercept)     1104.71      34.22  32.281 < 0.0000000000000002 ***
+HouseholdSize2  -318.72      39.48  -8.074  0.00000000000000110 ***
+HouseholdSize3  -664.14      38.77 -17.130 < 0.0000000000000002 ***
+HouseholdSize4  -855.86      46.39 -18.451 < 0.0000000000000002 ***
+HouseholdSize5  -796.18     101.95  -7.810  0.00000000000000876 ***
+
+Multiple R-squared:  0.1885,	Adjusted R-squared:  0.187 
+
+```{r}
+# customer.N$HouseholdSize <- as.integer(customer.N$HouseholdSize)
+
+
+model.HS <- lm(TotalPurchase ~ HouseholdSize, data=customer.N)
+model.HS
+summary(model.HS)
+
+plot(x=as.integer(customer.N$HouseholdSize),y=customer.N$TotalPurchase,
+     type='p',
+     col='royalblue',
+     main='가구 구성원 수')
+
+abline(model.HS,
+       col='red',
+       lty=1, lwd=2)
+```
+
+
+
+
+```{r}
+colnames(customer.N)
+###############
+customer.N <- customer.N[complete.cases(customer.N),]
+
+model <- lm(TotalPurchase~Income+Education_N+HouseholdSize+Age, data=customer.N)
+step(model, direction = 'backward')
+```
+
+
+
+
+--------------------------------------------------------
+분산분석 - 학력
+
+```{r}
+shapiro.test(customer.N$TotalPurchase)
+shapiro.test(customer.N$Education_N)
+
+library(car)
+# 등분산성 여부
+bartlett.test(TotalPurchase~Education_N, data=customer.N)
+# 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행
+oneway.test(TotalPurchase~Education_N, data=customer.N)
+
+edu.compare <- TukeyHSD(edu.aov)
+edu.compare
+
+model.tables(edu.aov, type='mean')
+model.tables(edu.aov, type='effects')
+
+```
+```{r}
+boxplot(TotalPurchase~Education_N, data=customer.N)
+plot(table(customer.N$Education_N))
+```
+
+분산분석 - 가족구성원수     
+
+```{r}
+shapiro.test(customer.N$TotalPurchase)
+shapiro.test(as.integer(customer.N$HouseholdSize))
+
+# 등분산성 여부
+bartlett.test(TotalPurchase~HouseholdSize, data=customer.N)
+# 등분산성 가정 충족 하지 못해서 일원분산분석을 oneway.test로 실행
+hs.ow <-oneway.test(TotalPurchase~HouseholdSize, data=customer.N)
+hs.ow
+
+hs.compare <- TukeyHSD(hs.ow)
+hs.compare
+
+model.tables(edu.aov, type='mean')
+model.tables(edu.aov, type='effects')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
