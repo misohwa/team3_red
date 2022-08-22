@@ -7,7 +7,7 @@
 
 * **심정윤** (SJY) - Marketing Campaign  
 
-* **이재상** (LJS) - Productivity Prediction of Garment Employees 
+* **이재상** (LJS) - Productivity Prediction of Garment Employees dataset
 
 * **이혜진** (LHJ_w) - House Prices  
 
