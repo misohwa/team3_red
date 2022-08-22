@@ -1,0 +1,37 @@
+---
+title: "Intro"
+author: "team3_red"
+---
+
+### 자랑스러운 우리 팀 멤버들을 소개합니다!
+
+* 팀 장 : **곽성화**\
+
+* 팀원1 : **이재상**
+   - data : Productivity Prediction of Garment Employees 의류회사의 생산성 예측\
+   - analysis : 독립표본평균검정, 일원분산분석, 상관분석, 다중회귀분석
+
+* 팀원2 : **이호진** 
+   - data : Bike Sharing Demand 공공자전거 수요 예측\
+   - analysis : 일원분산분석, 다중회귀분석
+
+* 팀원3 : **심정윤** 
+   - data : Marketing Campaign 슈퍼마케팅 캠페인\
+   - analysis : 카이제곱분석, 일원분산분석, 다중회귀분석
+
+* 팀원4 : **김지윤** 
+   - data : Titanic Machine Learning from Disaster 타이타닉\
+   - analysis : 카이제곱분석, 이항로지스틱회귀분석
+
+* 팀원5 : **이혜진** 
+   - data : House Prices Advanced Regression Techniques 집값 예측\
+   - analysis : 상관분석, 다중회귀분석
+
+
+### 어려웠던 점
+1. 분산분석의 등분산성이 성립하지 않을 때, 사후분석 방법(games-howell)
+2. 연관성 측도(Cramer V)에 대한 해석
+3. 다중회귀분석 실행 시 독립변수 선택(선택방법)\
+
+
+git url : <https://github.com/misohwa/team3_red/tree/main>
